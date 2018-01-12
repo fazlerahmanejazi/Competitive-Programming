@@ -1,0 +1,7 @@
+/home/fazle/Desktop/Competitive Programming/CS Academy/52/C.cpp: In function ‘int main()’:
+/home/fazle/Desktop/Competitive Programming/CS Academy/52/C.cpp:44:28: error: expected ‘;’ before ‘ans’
+           else (b[l]>b[r]) ans++, r-- ;
+                            ^~~
+/home/fazle/Desktop/Competitive Programming/CS Academy/52/C.cpp:45:11: error: ‘else’ without a previous ‘if’
+           else l++, r--, ans++ ;
+           ^~~~

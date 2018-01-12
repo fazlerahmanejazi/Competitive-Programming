@@ -1,0 +1,19 @@
+#include <bits/stdc++.h>
+using namespace std ;
+int main()
+{ int n, a, b,temp ;
+  cin>> n ;
+  if(n==1) temp=0 ;
+  else if(n==2) temp=1 ;
+  else
+  {   a=0, b=1 ;
+    for(int i=3 ; i<=n ; i++)
+     {
+          temp=a+b ;
+          a=b ;
+          b=temp ;
+     }
+  }
+  cout<< temp << endl ;
+return 0 ;
+}

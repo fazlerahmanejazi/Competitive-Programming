@@ -1,0 +1,3 @@
+/home/fazle/Desktop/Competitive Programming/Codeforces/2017-2018 ACM-ICPC, NEERC, Southern Subregional Contest (Online Mirror, ACM-ICPC Rules, Teams Preferred)/E.cpp:57:4: error: ‘abcdefghijklmnopqrstuvwxyz’ does not name a type
+   }abcdefghijklmnopqrstuvwxyz
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~

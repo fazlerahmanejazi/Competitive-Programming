@@ -1,0 +1,36 @@
+/home/fazle/Desktop/Competitive Programming/At Coder/Regular 079/E.cpp: In function ‘int main()’:
+/home/fazle/Desktop/Competitive Programming/At Coder/Regular 079/E.cpp:25:55: error: redeclaration of ‘lli ans’
+     lli n, x, curr, ans, p, q, pi, qi, l, r, m, P, Q, ans, res=0 ;
+                                                       ^~~
+/home/fazle/Desktop/Competitive Programming/At Coder/Regular 079/E.cpp:25:21: note: ‘lli ans’ previously declared here
+     lli n, x, curr, ans, p, q, pi, qi, l, r, m, P, Q, ans, res=0 ;
+                     ^~~
+/home/fazle/Desktop/Competitive Programming/At Coder/Regular 079/E.cpp:28:22: error: ‘lii’ was not declared in this scope
+     vector<pair<lli, lii>> b(n) ;
+                      ^~~
+/home/fazle/Desktop/Competitive Programming/At Coder/Regular 079/E.cpp:28:22: error: template argument 2 is invalid
+/home/fazle/Desktop/Competitive Programming/At Coder/Regular 079/E.cpp:28:25: error: template argument 1 is invalid
+     vector<pair<lli, lii>> b(n) ;
+                         ^~
+/home/fazle/Desktop/Competitive Programming/At Coder/Regular 079/E.cpp:28:25: error: template argument 2 is invalid
+/home/fazle/Desktop/Competitive Programming/At Coder/Regular 079/E.cpp:40:14: error: invalid types ‘int[int]’ for array subscript
+           b[i]=mp(a[i], i) ;
+              ^
+/home/fazle/Desktop/Competitive Programming/At Coder/Regular 079/E.cpp:13:22: error: request for member ‘begin’ in ‘b’, which is of non-class type ‘int’
+ #define all(cc) (cc).begin(),(cc).end()
+                      ^
+/home/fazle/Desktop/Competitive Programming/At Coder/Regular 079/E.cpp:41:14: note: in expansion of macro ‘all’
+         sort(all(b)) ;
+              ^~~
+/home/fazle/Desktop/Competitive Programming/At Coder/Regular 079/E.cpp:13:35: error: request for member ‘end’ in ‘b’, which is of non-class type ‘int’
+ #define all(cc) (cc).begin(),(cc).end()
+                                   ^
+/home/fazle/Desktop/Competitive Programming/At Coder/Regular 079/E.cpp:41:14: note: in expansion of macro ‘all’
+         sort(all(b)) ;
+              ^~~
+/home/fazle/Desktop/Competitive Programming/At Coder/Regular 079/E.cpp:42:25: error: invalid types ‘int[lli {aka long long int}]’ for array subscript
+         tie(p, pi)=b[n-1] ;
+                         ^
+/home/fazle/Desktop/Competitive Programming/At Coder/Regular 079/E.cpp:43:25: error: invalid types ‘int[lli {aka long long int}]’ for array subscript
+         tie(q, qi)=b[n-2] ;
+                         ^

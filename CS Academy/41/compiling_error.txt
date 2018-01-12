@@ -1,0 +1,22 @@
+/home/fazle/Desktop/Competitive Programming/CS Academy/41/B.cpp: In function ‘int main()’:
+/home/fazle/Desktop/Competitive Programming/CS Academy/41/B.cpp:31:11: error: overloaded function with no contextual type information
+     prev=-1 ;
+           ^
+/home/fazle/Desktop/Competitive Programming/CS Academy/41/B.cpp:35:16: error: cannot resolve overloaded function ‘prev’ based on conversion to type ‘__gnu_cxx::__alloc_traits<std::allocator<int> >::value_type {aka int}’
+           l[i]=prev ;
+                ^~~~
+/home/fazle/Desktop/Competitive Programming/CS Academy/41/B.cpp:36:16: error: overloaded function with no contextual type information
+           prev=i ;
+                ^
+/home/fazle/Desktop/Competitive Programming/CS Academy/41/B.cpp:38:10: error: overloaded function with no contextual type information
+     prev=n ;
+          ^
+/home/fazle/Desktop/Competitive Programming/CS Academy/41/B.cpp:42:16: error: cannot resolve overloaded function ‘prev’ based on conversion to type ‘__gnu_cxx::__alloc_traits<std::allocator<int> >::value_type {aka int}’
+           r[i]=prev ;
+                ^~~~
+/home/fazle/Desktop/Competitive Programming/CS Academy/41/B.cpp:43:16: error: overloaded function with no contextual type information
+           prev=i ;
+                ^
+/home/fazle/Desktop/Competitive Programming/CS Academy/41/B.cpp:54:76: error: expected primary-expression before ‘)’ token
+           if((vacant.size()>=2) && (vacant[0]<L || vacant[vacant.size()-1]>)) pos=true ;
+                                                                            ^
