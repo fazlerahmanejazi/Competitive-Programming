@@ -22,89 +22,59 @@ using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
 bool pos=true ;
-int n, m, u, v, x, cnt1, cnt2, res ;
-vvi adj, radj, scc ;
-vi in, out, T, temp ;
-vb visit ;
+int n, m, u, v, x, cnt ;
+vvi adj ;
+vi temp, cycle, nxt, visit ;
 
-void init()
+void findCycle(int u, int edge)
   {
-    adj.resize(n+1) ;
-    radj.resize(n+1) ;
-    visit.assign(n+1, false) ;
-    in.assign(n+1, 0) ;
-    out.assign(n+1, 0) ;
-  }
-
-void dfs_topo(int u)
-  {
-    visit[u]=true ;
-    for(auto v:adj[u]) if(!visit[v]) dfs_topo(v) ;
-    T.pb(u) ;
-  }
-
-void dfs(int u)
-  {
-    visit[u]=true ;
-    for(auto v:radj[u]) if(!visit[v]) dfs(v) ;
-    temp.pb(u) ;
-  }
-
-void f1(int u)
-  {
-    visit[u]=true ;
-    for(auto v:adj[u]) if(!visit[v]) f1(v) ;
-    cnt1++ ;
-  }
-
-void f2(int u)
-  {
-    visit[u]=true ;
-    for(auto v:radj[u]) if(!visit[v]) f2(v) ;
-    cnt2++ ;
-  }
-
-void kosaraju()
-  {
-    reverse(all(T)) ;
-    visit.assign(n+1, false) ;
-    for(auto u:T)
-      if(!visit[u])
+    temp.pb(edge) ;
+    visit[u]++ ;
+    for(auto i:adj[u])
+      if(!visit[nxt[i]]) findCycle(nxt[i], i) ;
+      else if(visit[nxt[i]]==1)
         {
-          temp.clear() ;
-          dfs(u) ;
-          scc.pb(temp) ;
+          cycle=temp ;
+          cycle.pb(i) ;
+          pos=false ;
         }
+    visit[u]++ ;
+    temp.pop_back() ;
+  }
+
+void check(int u)
+  {
+    visit[u]++ ;
+    for(auto i:adj[u])
+      if(i!=x)
+        {
+          if(!visit[nxt[i]]) check(nxt[i]) ;
+          else if(visit[nxt[i]]==1) cnt++ ;
+        }
+    visit[u]++ ;
   }
 
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
     cin>> n >> m ;
-    init() ;
+    adj.resize(n+1) ;
+    visit.assign(n+1, 0) ;
     for(int i=0 ; i<m ; i++)
       {
         cin>> u >> v ;
-        adj[u].pb(v) ;
-        radj[v].pb(u) ;
-        out[u]++ ;
-        in[v]++ ;
+        adj[u].pb(i) ;
+        nxt.pb(v) ;
       }
-    for(int i=1 ; i<=n ; i++) if(!visit[i]) dfs_topo(i) ;
-    kosaraju() ;
-    for(auto i:scc) if(i.size()>1) x++ ;
-    if(x>1) pos=false ;
-    for(auto s:scc)
+    for(int i=1 ; i<=n ; i++) if(!visit[i]) findCycle(i, -1) ;
+    for(auto i:cycle)
       {
-        visit.assign(n+1, true) ;
-        for(auto u:s) visit[u]=false ;
-        cnt1=cnt2=0 ;
-        f1(s[0]) ;
-        for(auto u:s) visit[u]=false ;
-        f2(s[0]) ;
-        if(cnt1!=cnt2) res++ ;
+        x=i ;
+        cnt=0 ;
+        visit.assign(n+1, false) ;
+        for(int i=1 ; i<=n ; i++) if(!visit[i]) check(i) ;
+        if(!cnt) pos=true ;
       }
-    if(res>1) pos=false ;
-    if(pos) cout<< "YES ";
+    if(pos) cout<< "YES" ;
     else cout<< "NO" ;
   }

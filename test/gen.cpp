@@ -24,4 +24,10 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    
+    int T=100 ;
+    //while(T--)
+      {
+        int b=rand()%5000 +1 ;
+        for(int i=b ; i>=1 ; i--) cout<< i << " " << b << endl ;
+      }
+  }
