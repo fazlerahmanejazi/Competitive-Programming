@@ -1,0 +1,32 @@
+/home/fazle/Desktop/Competitive Programming/CS Academy/62/D.cpp: In function ‘int main()’:
+/home/fazle/Desktop/Competitive Programming/CS Academy/62/D.cpp:40:47: error: no matching function for call to ‘std::set<std::pair<int, int> >::upper_bound(<brace-enclosed initializer list>)’
+         auto x=prev.upper_bound({a[i], ignore}) ;
+                                               ^
+In file included from /usr/include/c++/6/set:61:0,
+                 from /usr/include/x86_64-linux-gnu/c++/6/bits/stdc++.h:87,
+                 from /home/fazle/Desktop/Competitive Programming/CS Academy/62/D.cpp:1:
+/usr/include/c++/6/bits/stl_set.h:757:7: note: candidate: std::set<_Key, _Compare, _Alloc>::iterator std::set<_Key, _Compare, _Alloc>::upper_bound(const key_type&) [with _Key = std::pair<int, int>; _Compare = std::less<std::pair<int, int> >; _Alloc = std::allocator<std::pair<int, int> >; std::set<_Key, _Compare, _Alloc>::iterator = std::_Rb_tree_const_iterator<std::pair<int, int> >; std::set<_Key, _Compare, _Alloc>::key_type = std::pair<int, int>]
+       upper_bound(const key_type& __x)
+       ^~~~~~~~~~~
+/usr/include/c++/6/bits/stl_set.h:757:7: note:   no known conversion for argument 1 from ‘<brace-enclosed initializer list>’ to ‘const key_type& {aka const std::pair<int, int>&}’
+/usr/include/c++/6/bits/stl_set.h:761:7: note: candidate: std::set<_Key, _Compare, _Alloc>::const_iterator std::set<_Key, _Compare, _Alloc>::upper_bound(const key_type&) const [with _Key = std::pair<int, int>; _Compare = std::less<std::pair<int, int> >; _Alloc = std::allocator<std::pair<int, int> >; std::set<_Key, _Compare, _Alloc>::const_iterator = std::_Rb_tree_const_iterator<std::pair<int, int> >; std::set<_Key, _Compare, _Alloc>::key_type = std::pair<int, int>]
+       upper_bound(const key_type& __x) const
+       ^~~~~~~~~~~
+/usr/include/c++/6/bits/stl_set.h:761:7: note:   no known conversion for argument 1 from ‘<brace-enclosed initializer list>’ to ‘const key_type& {aka const std::pair<int, int>&}’
+/usr/include/c++/6/bits/stl_set.h:767:2: note: candidate: template<class _Kt> decltype ((std::set<_Key, _Compare, _Alloc>::iterator)(((std::set<_Key, _Compare, _Alloc>*)this)->std::set<_Key, _Compare, _Alloc>::_M_t._M_upper_bound_tr(__x))) std::set<_Key, _Compare, _Alloc>::upper_bound(const _Kt&) [with _Kt = _Kt; _Key = std::pair<int, int>; _Compare = std::less<std::pair<int, int> >; _Alloc = std::allocator<std::pair<int, int> >]
+  upper_bound(const _Kt& __x)
+  ^~~~~~~~~~~
+/usr/include/c++/6/bits/stl_set.h:767:2: note:   template argument deduction/substitution failed:
+/home/fazle/Desktop/Competitive Programming/CS Academy/62/D.cpp:40:47: note:   couldn't deduce template parameter ‘_Kt’
+         auto x=prev.upper_bound({a[i], ignore}) ;
+                                               ^
+In file included from /usr/include/c++/6/set:61:0,
+                 from /usr/include/x86_64-linux-gnu/c++/6/bits/stdc++.h:87,
+                 from /home/fazle/Desktop/Competitive Programming/CS Academy/62/D.cpp:1:
+/usr/include/c++/6/bits/stl_set.h:773:2: note: candidate: template<class _Kt> decltype ((std::set<_Key, _Compare, _Alloc>::iterator)(((const std::set<_Key, _Compare, _Alloc>*)this)->std::set<_Key, _Compare, _Alloc>::_M_t._M_upper_bound_tr(__x))) std::set<_Key, _Compare, _Alloc>::upper_bound(const _Kt&) const [with _Kt = _Kt; _Key = std::pair<int, int>; _Compare = std::less<std::pair<int, int> >; _Alloc = std::allocator<std::pair<int, int> >]
+  upper_bound(const _Kt& __x) const
+  ^~~~~~~~~~~
+/usr/include/c++/6/bits/stl_set.h:773:2: note:   template argument deduction/substitution failed:
+/home/fazle/Desktop/Competitive Programming/CS Academy/62/D.cpp:40:47: note:   couldn't deduce template parameter ‘_Kt’
+         auto x=prev.upper_bound({a[i], ignore}) ;
+                                               ^
