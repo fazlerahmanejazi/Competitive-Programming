@@ -23,56 +23,49 @@ using vpii = vector<pair<int, int>> ;
 
 #define ld long double
 
-int n, k, T=200 ;
-vi a, b ;
-vector<ld> K ;
-ld x ;
-vvi adj ;
+lli n, k ;
+vlli a, s, S ;
+ld dp[50005][105] ;
 
-void update()
+ld cost(int l, int r)
   {
-    for(int i=0 ; i<n ; i++)
-      {
-        ld x=inf, idx, d ;
-        for(int j=0 ; j<k ; j++)
-          {
-            d=abs((K[j]-a[i])*(K[j]-a[i])) ;
-            if(d<x) x=d, idx=j ;
-          }
-        adj[idx].pb(i) ;
-      }
-    for(int i=0 ; i<k ; i++)
-      {
-        ld x=0 ;
-        for(auto j:adj[i]) x+=a[j] ;
-        if(!adj[i].empty()) x/=adj[i].size() ;
-        K[i]=x ;
-      }
+    if(r<l) return 0 ;
+    return (S[r]-S[l-1])-(s[r]-s[l-1])*(s[r]-s[l-1])/(r-l+1.0) ;
   }
 
-ld solve()
+void compute(int j, int L, int R, int optL, int optR)
   {
-    ld ans=0 ;
-    for(int i=0 ; i<k ; i++)
-      for(auto j:adj[i])
-        ans+=(a[j]-K[i])*(a[j]-K[i]) ;
-    return ans ;
+    if(R<L) return ;
+    int m=(L+R)/2, best=optL ;
+    ld curr ;
+    dp[m][j]=INF ;
+    for(int k=optL ; k<=min(m, optR) ; k++)
+      {
+        curr=dp[k][j-1]+cost(k+1, m) ;
+        if(curr<dp[m][j]) dp[m][j]=curr, best=k ;
+      }
+    compute(j, L, m-1, optL, best) ;
+    compute(j, m+1, R, best, optR) ;
   }
 
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
     cin>> n >> k ;
-    a.resize(n+1) ;
-    b.resize(n+1) ;
-    adj.resize(k+1) ;
+    a.resize(n) ;
+    s.assign(n+1, 0) ;
+    S.assign(n+1, 0) ;
     for(int i=0 ; i<n ; i++) cin>> a[i] ;
-    for(int i=0 ; i<k ; i++) K.pb(a[i]) ;
-    while(T--)
+    sort(all(a)) ;
+    for(int i=1 ; i<=n ; i++)
       {
-        update() ;
-        for(int i=0 ; i<k ; i++) adj[i].clear() ;
+        s[i]=s[i-1]+a[i-1] ;
+        S[i]=S[i-1]+a[i-1]*a[i-1] ;
       }
-    update() ;
-    cout<< fixed << setprecision(9) << solve() ;
+    for(int i=0 ; i<=n ; i++)
+      for(int j=0 ; j<=k ; j++)
+        dp[i][j]=INF ;
+    dp[0][0]=0 ;
+    for(int j=1 ; j<=k ; j++) compute(j, 1, n, 0, n) ;
+    cout<< fixed << setprecision(9) << dp[n][k] ;
   }
