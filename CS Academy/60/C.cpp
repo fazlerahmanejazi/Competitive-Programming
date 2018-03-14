@@ -19,93 +19,88 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-int n, m, k, x, cycle, notPos, check ;
-priority_queue<int> pq ;
-vi p ;
-vvi d ;
-vector<set<int>> adj ;
-vb visit ;
+int n, m, k, x, isCycle, s=-1, T ;
+vi inDeg, visit, taken, topo, ans ;
+vvi adj, d ;
 
-void solve(int l, int r, int idx)
+void check(int u)
   {
-    int prev=l, u, v ;
-    for(int i=l ; i<=r ; i++)
-      if(d[i][idx]!=d[prev][idx])
-        {
-          if(i-prev>1 && idx+1<m) solve(prev, i-1, idx+1) ;
-          u=d[prev][idx] ; v=d[i][idx] ;
-          adj[u].insert(v) ;
-          prev=i ;
-        }
-    if(r-prev>=1) solve(prev, r, idx+1) ;
+    visit[u]++ ;
+    for(auto v:adj[u])
+      if(!visit[v]) check(v) ;
+      else if(visit[v]==1) isCycle=true ;
+    visit[u]++ ;
   }
 
 void dfs(int u)
   {
-    visit[u]=true ;
-    if(!pq.empty())
-      {
-        int x=-pq.top() ;
-        pq.pop() ;
-        p[u]=x ;
-      }
-    else notPos=1 ;
-    for(auto v:adj[u])
-      if(!visit[v]) dfs(v) ;
-      else cycle=1 ;
+    visit[u]++ ;
+    for(auto v:adj[u]) if(!visit[v]) dfs(v) ;
+    topo.pb(u) ;
   }
-
 
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
     cin>> n >> k >> m ;
-    d.resize(n+1) ;
-    p.assign(k+1, 0) ;
-    adj.resize(k+1) ;
-    visit.assign(k+1, false) ;
+    d.resize(n) ;
+    inDeg.assign(k, 0) ;
+    ans.resize(k) ;
+    adj.resize(k) ;
+    visit.assign(k, 0) ;
+    taken.assign(k, 0) ;
     for(int i=0 ; i<n ; i++)
       for(int j=0 ; j<m ; j++)
         {
           cin>> x ;
           d[i].pb(x) ;
         }
-    solve(0, n-1, 0) ;
-    for(int i=1 ; i<k ; i++) pq.push(-i) ;
-    /*for(int i=0 ; i<m ; i++)
-      for(auto s:start[i])
-        if(!visit[s])
-          {
-            dfs(s) ;
-            if(!check) pq.push(0), check++ ;
-          }
-    */
-    for(int j=0 ; j<m ; j++)
+    for(int i=0 ; i<n ; i++)
       {
-        if(j==1 && m!=1) pq.push(0), check++ ;
-        for(int i=0 ; i<n ; i++)
-          if(!visit[d[i][j]])
+        bool allSame=1 ;
+        for(int j=0 ; j<m ; j++) if(d[i][j]!=d[i][0]) allSame=0 ;
+        if(!allSame) taken[d[i][0]]=1 ;
+      }
+    for(int i=0 ; i<n-1 ; i++)
+      {
+        int idx=-1 ;
+        for(int j=0 ; j<m ; j++)
+          if(d[i][j]!=d[i+1][j])
             {
-              int s=d[i][j] ;
-              dfs(s) ;
+              idx=j ;
+              break ;
             }
-      }
-    for(int i=0 ; i<k ; i++)
-      if(!visit[i])
-        dfs(i) ;
-    if(notPos || cycle) cout<< -1 ;
-    else
-      {
-        map<int, int> cnt ;
-        for(int i=0 ; i<k ; i++)
+        if(idx==-1)
           {
-            cnt[p[i]]++ ;
-            if(cnt[p[i]]>1)
-              {
-                cout<< -1 ;
-                return 0 ;
-              }
+            cout<< -1 ;
+            return 0 ;
           }
-        for(int i=0 ; i<k ; i++) cout<< p[i] << " " ;
+        adj[d[i][idx]].pb(d[i+1][idx]) ;
+        inDeg[d[i+1][idx]]++ ;
       }
+    for(int i=0 ; i<k ; i++) if(!visit[i]) check(i) ;
+    for(int i=0 ; i<k ; i++)
+      if(!taken[i] && !inDeg[i])
+        {
+          s=i ;
+          break ;
+        }
+    if(isCycle || s==-1)
+      {
+        cout<< -1 ;
+        return 0 ;
+      }
+    visit.assign(k, 0) ;
+    dfs(s) ;
+    reverse(all(topo)) ;
+    for(auto i:topo) ans[i]=T++ ;
+    for(int i=0 ; i<k ; i++)
+      if(!visit[i] && !inDeg[i])
+        {
+          topo.clear() ;
+          dfs(i) ;
+          reverse(all(topo)) ;
+          for(auto i:topo) ans[i]=T++ ;
+        }
+    for(auto i:ans) cout<< i << " " ;
   }
