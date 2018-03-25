@@ -1,0 +1,11 @@
+/home/fazle/Desktop/Competitive Programming/Codeforces/471/temp.cpp: In function ‘int main()’:
+/home/fazle/Desktop/Competitive Programming/Codeforces/471/temp.cpp:16:18: error: ‘i’ does not name a type
+         for(auto i:c)
+                  ^
+/home/fazle/Desktop/Competitive Programming/Codeforces/471/temp.cpp:19:9: error: expected ‘;’ before ‘if’
+         if(c.size()==2 && x>0)
+         ^
+/home/fazle/Desktop/Competitive Programming/Codeforces/471/temp.cpp:19:9: error: expected primary-expression before ‘if’
+/home/fazle/Desktop/Competitive Programming/Codeforces/471/temp.cpp:19:9: error: expected ‘;’ before ‘if’
+/home/fazle/Desktop/Competitive Programming/Codeforces/471/temp.cpp:19:9: error: expected primary-expression before ‘if’
+/home/fazle/Desktop/Competitive Programming/Codeforces/471/temp.cpp:19:9: error: expected ‘)’ before ‘if’
