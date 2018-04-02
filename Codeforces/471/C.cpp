@@ -21,6 +21,52 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
+lli q, L, R, ans ;
+vlli a, b ;
+
+lli root(lli x)
+  {
+    lli l=0, r=1e9+1, m ;
+    while(l<r-1)
+      {
+        m=(l+r)/2 ;
+        if(m*m>x) r=m ;
+        else l=m ;
+      }
+      return l ;
+  }
+
+void pre()
+  {
+    lli x, y ;
+    for(lli i=2 ; i<=1000000 ; i++)
+      {
+        x=i*i*i ;
+        while(1)
+          {
+            y=root(x) ;
+            if(y*y!=x) a.pb(x) ;
+            if(x>INF/i) break ;
+            x*=i ;
+          }
+      }
+    sort(all(a)) ;
+    b.pb(a[0]) ;
+    for(int i=1 ; i<a.size() ; i++) if(a[i]!=a[i-1]) b.pb(a[i]) ;
+  }
+
+lli query()
+  {
+    cin>> L >> R ;
+    ans=root(R)-root(L-1) ;
+    ans+=upper_bound(all(b), R)-lower_bound(all(b), L) ;
+    cout<< ans << endl ;
+  }
+
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
+    pre() ;
+    cin>> q ;
+    while(q--) query() ;
+  }
