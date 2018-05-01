@@ -1,0 +1,4 @@
+/home/fazle/Desktop/Competitive Programming/Codeforces/473/E.cpp: In function ‘void solve()’:
+/home/fazle/Desktop/Competitive Programming/Codeforces/473/E.cpp:65:18: error: ‘to_string’ was not declared in this scope
+  A = to_string(ta),B = to_string(tb);
+                  ^
