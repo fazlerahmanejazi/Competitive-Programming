@@ -21,34 +21,45 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
+int n, m, u, v, w, x, idx, dp[100005], inDeg[100005], s, ans, mx=inf ;
+vb visit ;
+vi S, E ;
+vector<vector<tuple<int, int, int>>> adj ;
+
+void dfs(int u, int val, int idx, int len)
+  {
+    int v, w, d ;
+    visit[u]=true ;
+    ans=max(ans, len) ;
+    for(auto i:adj[u])
+      {
+        tie(v, w, d)=i ;
+        if(d>idx)
+          {
+            if(w>val) dfs(v, w, d, len+1) ;
+            else dfs(v, w, d, 0) ;
+          }
+      }
+  }
+
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    lli n, q, idx, val, x, ans=0, res=0 ;
-    cin>> n ;
-    vlli a(n+1) ;
-    map<lli, lli> cnt ;
+    cin>> n >> m ;
+    adj.resize(n+1) ;
+    visit.assign(n+1, false) ;
     for(int i=1 ; i<=n ; i++)
       {
-        cin>> x ;
-        a[i]=x ;
-        cnt[x]++ ;
-        if(cnt[x]>cnt[x-1] && cnt[x]>cnt[x+1]) ans++ ;
-        else if(cnt[x]<=cnt[x-1] && cnt[x]<=cnt[x+1]) ans-- ;
+        cin>> u >> v >> w ;
+        if(mx>w) mx=w, x=u ;
+        E.pb(u) ;
+        if(u==v) continue ;
+        adj[u].pb(mt(v, w, i)) ;
+        inDeg[v]++ ;
       }
-    cin>> q ;
-    for(int i=1 ; i<=q ; i++)
-      {
-        cin>> idx >> val ;
-        x=a[idx] ;
-        if(cnt[x]<=cnt[x-1] && cnt[x]<=cnt[x+1]) ans++ ;
-        else if(cnt[x]>cnt[x-1] && cnt[x]>cnt[x+1]) ans-- ;
-        cnt[x]-- ;
-        x=a[idx]=val ;
-        cnt[x]++ ;
-        if(cnt[x]>cnt[x-1] && cnt[x]>cnt[x+1]) ans++ ;
-        else if(cnt[x]<=cnt[x-1] && cnt[x]<=cnt[x+1]) ans-- ;
-        res=(res+ans*i)%mod ;
-      }
-    cout<< res ;
+    for(int i=1 ; i<=n ; i++) if(!inDeg[i]) S.pb(i) ;
+    for(auto i:S) dfs(i, 0, 0, 0) ;
+    for(auto i:E) if(!visit[i]) dfs(i, 0, 0, 0) ;
+    dfs(x, 0, 0, 0) ;
+    cout<< ans ;
   }
