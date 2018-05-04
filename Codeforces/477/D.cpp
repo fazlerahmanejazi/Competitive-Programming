@@ -21,31 +21,44 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-lli n, x1, x2, l, r, m, ans ;
-vlli c ;
-
-
-
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
+    lli n, x1, x2, x ;
+    vpii data ;
     cin>> n >> x1 >> x2 ;
-    c.resize(n) ;
-    for(int i=0 ; i<n ; i++) cin>> c[i] ;
-    sort(all(c)) ;
-    l=-1 ; r=n ;
-    while(r-l>1)
-      {
-        m=(l+r)/2 ;
-        f1=check(m) ; f2=check(m+1) ;
-        if(f1>f2)
-          {
-            r=m ;
-            ans=max(ans, f1) ;
-          }
-        else
-          {
-            l=m ;
-            ans=max(ans, f2) ;
-          }
-      }
+    for(int i=1 ; i<=n ; i++) cin>> x, data.pb(mp(x, i)) ;
+    sort(all(data)) ;
+    reverse(all(data)) ;
+    for(int i=0 ; i<n ; i++)
+      if(data[i].fi*(i+1)>=x1)
+        {
+          for(int j=i+1 ; j<n ; j++)
+            if(data[j].fi*(j-i)>=x2)
+              {
+                cout<< "Yes" << endl ;
+                cout<< i+1 << " " << j-i << endl ;
+                for(int k=0 ; k<=i ; k++) cout<< data[k].se << " " ;
+                cout<< endl ;
+                for(int k=i+1 ; k<=j ; k++) cout<< data[k].se << " " ;
+                return 0 ;
+              }
+          break ;
+        }
+    for(int i=0 ; i<n ; i++)
+      if(data[i].fi*(i+1)>=x2)
+        {
+          for(int j=i+1 ; j<n ; j++)
+            if(data[j].fi*(j-i)>=x1)
+              {
+                cout<< "Yes" << endl ;
+                cout<< j-i << " " << i+1 << endl ;
+                for(int k=i+1 ; k<=j ; k++) cout<< data[k].se << " " ;
+                cout<< endl ;
+                for(int k=0 ; k<=i ; k++) cout<< data[k].se << " " ;
+                return 0 ;
+              }
+          break ;
+        }
+    cout<< "No" ;
+  }
