@@ -21,6 +21,35 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
+lli n, b=31, p2[400400], hsh[400400], hsh2[400400] ;
+string s, r ;
+
+void hash_init()
+  {
+    p2[0]=1 ;
+    for(int i=1 ; i<400400 ; i++) p2[i]=(p2[i-1]*b)%mod ;
+    for(int i=1 ; i<=n ; i++)
+      {
+        hsh[i]=(hsh[i-1]+(s[i]-'a')*p2[i])%mod ;
+        hsh2[i]=(hsh2[i-1]+(r[i]-'a')*p2[i])%mod ;
+      }
+  }
+
+lli get_hsh(int l, int r)
+  {
+    return ((hsh[r]-hsh[l-1]+mod)*p2[n-l])%mod ;
+  }
+
+lli get_hsh2(int l, int r)
+  {
+    return ((hsh2[r]-hsh2[l-1]+mod)*p2[n-l])%mod ;
+  }
+
+bool is_pal(int l,int r)
+  {
+    return get_hsh(l, r)==get_hsh2(n-r+1, n-l+1) ;
+  }
+
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
@@ -28,21 +57,16 @@ int main()
     cin>> T ;
     for(int tc=1 ; tc<=T ; tc++)
       {
-        int n, l, r, ans=0 ;
-        string s ;
+        int ans=0 ;
         cin>> s ;
+        s=s+s ;
         n=s.length() ;
+        r=s ;
+        reverse(r.begin(), r.end()) ;
         s='#'+s ;
-        for(int i=0 ; i<n ; i++)
-          {
-            string temp=s ;
-            for(int j=1 ; j<=n-i ; j++) temp[j]=s[i+j] ;
-            for(int j=n-i+1 ; j<=n ; j++) temp[j]=s[j-n+i] ;
-            bool pos=true ;
-            l=1 ; r=n ;
-            while(l<r) if(temp[l++]!=temp[r--]) pos=false ;
-            if(pos) ans++ ;
-          }
+        r='#'+r ;
+        hash_init() ;
+        for(int i=1 ; i<=n/2 ; i++) if(is_pal(i, i+n/2-1)) ans++ ;
         cout<< ans << endl ;
       }
   }

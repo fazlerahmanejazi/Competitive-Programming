@@ -21,6 +21,35 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
+lli n, b=31, p2[400400], hsh[400400], hsh2[400400] ;
+string s, r ;
+
+void hash_init()
+  {
+    p2[0]=1 ;
+    for(int i=1 ; i<400400 ; i++) p2[i]=(p2[i-1]*b)%mod ;
+    for(int i=1 ; i<=n ; i++)
+      {
+        hsh[i]=(hsh[i-1]+(s[i]-'a')*p2[i])%mod ;
+        hsh2[i]=(hsh2[i-1]+(r[i]-'a')*p2[i])%mod ;
+      }
+  }
+
+lli get_hsh(int l, int r)
+  {
+    return ((hsh[r]-hsh[l-1]+mod)*p2[n-l])%mod ;
+  }
+
+lli get_hsh2(int l, int r)
+  {
+    return ((hsh2[r]-hsh2[l-1]+mod)*p2[n-l])%mod ;
+  }
+
+bool is_pal(int l,int r)
+  {
+    return get_hsh(l, r)==get_hsh2(n-r+1, n-l+1) ;
+  }
+
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
@@ -28,32 +57,16 @@ int main()
     cin>> T ;
     for(int tc=1 ; tc<=T ; tc++)
       {
-        int n, d=1 ;
-        cin>> n ;
-        vi ans(n, 0), idx(n, 0) ;
-        vpii  a(n), b ;
-        for(int i=0 ; i<n ; i++) idx[i]=i ;
-        for(int i=0 ; i<n ; i++) cin>> a[i].fi, a[i].se=i ;
-        b.pb(a[0]) ;
-        for(int i=1 ; i<n ; i++)
-          if(a[i].fi==a[i-1].fi) idx[i]=idx[i-1] ;
-          else b.pb(a[i]) ;
-        a=b ;
-        while(!a.empty())
-          {
-            n=a.size() ;
-            b.clear() ;
-            b.pb(a[0]) ;
-            if(n>=3)
-              for(int i=1 ; i<n-1 ; i++)
-                if(a[i].fi>=min(a[i-1].fi, a[i+1].fi)) b.pb(a[i]) ;
-                else ans[a[i].se]=d ;
-            if(n>1) b.pb(a[n-1]) ;
-            d++ ;
-            if(a==b) break ;
-            a=b ;
-          }
-        for(int i=0 ; i<ans.size() ; i++) cout<< ans[idx[i]] << " " ;
-        cout<< endl ;
+        int ans=0 ;
+        cin>> s ;
+        s=s+s ;
+        n=s.length() ;
+        r=s ;
+        reverse(r.begin(), r.end()) ;
+        s='#'+s ;
+        r='#'+r ;
+        hash_init() ;
+        for(int i=1 ; i<=n/2 ; i++) if(is_pal(i, i+n/2-1)) ans++ ;
+        cout<< ans << endl ;
       }
   }
