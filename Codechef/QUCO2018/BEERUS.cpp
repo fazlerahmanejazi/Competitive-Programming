@@ -28,10 +28,15 @@ int main()
     cin>> T ;
     for(int tc=1 ; tc<=T ; tc++)
       {
-        lli n, ans=0 ;
+        lli n, ans=0, sum=0 ;
         cin>> n ;
-        vlli a(n), b(n) ;
-        for(int i=0 ; i<n ; i++) cin>> a[i] ;
-        for(int i=0 ; i<n ; i++) cin>> b[i] ;
+        vlli a(n), b(n), w(n) ;
+        for(int i=0 ; i<n ; i++) cin>> a[i], sum+=a[i] ;
+        for(int i=0 ; i<n ; i++) cin>> b[i], sum+=b[i] ;
+        sum/=(2*n) ;
+        for(int i=0 ; i<n ; i++) w[i]=(a[i]+b[i]-sum)/n ;
+        sort(all(w)) ;
+        for(int i=0 ; i<n-1 ; i++) ans+=w[i]+w[n-1] ;
+        cout<< ans << endl ;
       }
   }
