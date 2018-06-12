@@ -21,39 +21,27 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-int n, m, p[5000000], a[5000000], ans ;
-
-int find(int i)
+bool check(char c)
   {
-    if(i!=p[i]) p[i]=find(p[i]) ;
-    return p[i] ;
-  }
-
-bool same(int i, int j)
-  {
-    return find(i)==find(j) ;
-  }
-
-void unionset(int i, int j)
-  {
-    int x=find(i) ; int y=find(j) ;
-    if(x!=y) p[x]=y ;
+    if(c=='f' || c=='r' || c=='i' || c=='e' || c=='z' || c=='a') return true ;
+    return false ;
   }
 
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    for(int i=0 ; i<=5000000 ; i++) p[i]=i ;
-    cin>> n >> m ;
-    for(int i=1 ; i<=m ; i++) cin>> a[i] ;
-    for(int i=22 ; i>=0 ; i--)
+    int T ;
+    cin>> T ;
+    for(int tc=1 ; tc<=T ; tc++)
       {
-        vi idx ;
-        for(int j=1 ; j<=n ; j++)
-          if((a[j]&(1<<i)))
-            idx.pb(j) ;
-        for(int j=1 ; j<idx.size() ; j++) unionset(idx[j], idx[0]) ;
+        string s ;
+        cin>> s ;
+        int cnt=1 ;
+        bool prev=check(s[0]) ;
+        for(int i=1 ; i<s.length() ; i++)
+          if(check(s[i])==prev) cnt++ ;
+          else cout<< cnt, cnt=1, prev=check(s[i]) ;
+        if(cnt) cout<< cnt ;
+        cout<< endl ;
       }
-    for(int i=1 ; i<=n ; i++) if(find(i)==i) ans++ ;
-    cout<< ans ;
   }

@@ -1,0 +1,21 @@
+/home/fazle/Desktop/Competitive Programming/Codechef/JUNE18A/temp5.cpp:16:7: error: expected nested-name-specifier before ‘lli’
+ using lli = long long int ;
+       ^
+/home/fazle/Desktop/Competitive Programming/Codechef/JUNE18A/temp5.cpp:17:7: error: expected nested-name-specifier before ‘pii’
+ using pii = pair<int, int> ;
+       ^
+/home/fazle/Desktop/Competitive Programming/Codechef/JUNE18A/temp5.cpp:18:7: error: expected nested-name-specifier before ‘vi’
+ using vi = vector<int> ;
+       ^
+/home/fazle/Desktop/Competitive Programming/Codechef/JUNE18A/temp5.cpp:19:7: error: expected nested-name-specifier before ‘vb’
+ using vb = vector<bool> ;
+       ^
+/home/fazle/Desktop/Competitive Programming/Codechef/JUNE18A/temp5.cpp:20:7: error: expected nested-name-specifier before ‘vvi’
+ using vvi = vector<vector<int>> ;
+       ^
+/home/fazle/Desktop/Competitive Programming/Codechef/JUNE18A/temp5.cpp:21:7: error: expected nested-name-specifier before ‘vlli’
+ using vlli = vector<long long int> ;
+       ^
+/home/fazle/Desktop/Competitive Programming/Codechef/JUNE18A/temp5.cpp:22:7: error: expected nested-name-specifier before ‘vpii’
+ using vpii = vector<pair<int, int>> ;
+       ^
