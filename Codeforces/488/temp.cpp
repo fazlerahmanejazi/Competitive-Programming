@@ -1,5 +1,3 @@
-#pragma GCC optimize("O3")
-#define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 using namespace std ;
 
@@ -23,20 +21,20 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-bool A[500000][70], B[500000][70] ;
+int n, m, y, ans=0, curr, y1, y2 ;
+vi L, R ;
+lli A[500000], B[500000] ;
 
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    int n, m, y, ans=0, curr, y1, y2 ;
-    vi L, R ;
     cin>> n >> m ;
     for(int i=0 ; i<n ; i++) cin>> y, y=2*(y+10000), L.pb(y) ;
     for(int i=0 ; i<m ; i++) cin>> y, y=2*(y+10000), R.pb(y) ;
     sort(all(L)) ; sort(all(R)) ;
     for(int i=0 ; i<n ; i++)
       for(int j=0 ; j<m ; j++)
-        A[(L[i]+R[j])/2][i]=true, B[(L[i]+R[j])/2][j]=true ;
+        A[(L[i]+R[j])/2]|=(1LL<<i), B[(L[i]+R[j])/2][j]|=(1LL<<i) ;
     for(auto l:L)
       for(auto r:R)
         for(auto p:L)
@@ -46,8 +44,7 @@ int main()
                 curr=0 ;
                 y1=(l+r)/2 ;
                 y2=(p+q)/2 ;
-                for(int i=0 ; i<n ; i++) if(A[y1][i] || A[y2][i]) curr++ ;
-                for(int i=0 ; i<m ; i++) if(B[y1][i] || B[y2][i]) curr++ ;
+                curr=__builtin_popcountll(A[y1]|A[y2])+__builtin_popcountll(B[y1]|B[y2]) ;
                 ans=max(ans, curr) ;
               }
     cout<< ans ;
