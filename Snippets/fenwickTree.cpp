@@ -1,24 +1,13 @@
-template<class T, int size> struct fenwick
+template<class T, int SZ> struct BIT
   {
-    T a[size] ;
-    /* precondition: pos > 0 */
-    void add(int pos, const T& val)
+    T bit[SZ+1] ;
+    BIT() { memset(bit, 0, sizeof bit) ; }
+    void update(int k, T val)  { for( ; k<=SZ ; k+=(k&-k)) bit[k]+=val ; }
+    T getSum(int k)
       {
-        while(pos<size)
-          {
-            a[pos]+=val ;
-            pos+=pos&-pos ;
-          }
+        T temp=0 ;
+        for ( ; k>0 ; k-=(k&-k)) temp+=bit[k] ;
+        return temp ;
       }
-
-    T sum(int pos)
-      {
-        T ret=T() ;
-        while(pos>0)
-          {
-            ret+=a[pos] ;
-            pos-=pos&-pos ;
-          }
-        return ret ;
-      }
+    T query(int l, int r) { return getSum(r)-getSum(l-1) ; }
   } ;
