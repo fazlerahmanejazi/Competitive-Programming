@@ -21,8 +21,37 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
+bool overflow(lli x, lli y)
+  {
+    return (x>INF/y) ;
+  }
+
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-
+    lli n, k, p, s, curr, extra, ans=0 ;
+    cin>> n >> k ;
+    vlli a(n), nxt(n) ;
+    curr=n ;
+    for(int i=0 ; i<n ; i++) cin>> a[i] ;
+    for(int i=n-1 ; i>=0 ; i--)
+      {
+        nxt[i]=curr ;
+        if(a[i]!=1) curr=i ;
+      }
+    for(int i=0 ; i<n ; i++)
+      {
+        p=1 ;
+        s=0 ;
+        for(int j=i ; j<n ; j=nxt[j])
+          {
+            if(overflow(p, a[j])) break ;
+            p*=a[j] ;
+            s+=a[j] ;
+            extra=nxt[j]-j-1 ;
+            if(!(p%k) && s<=p/k && p/k<=s+extra) ans++ ;
+            s+=extra ;
+          }
+      }
+    cout<< ans ;
   }

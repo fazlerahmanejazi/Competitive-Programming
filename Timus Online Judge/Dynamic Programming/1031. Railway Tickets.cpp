@@ -24,5 +24,19 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    
+    lli n, s, t, l[3], c[3], a[10010], dp[10010] ;
+    for(int i=0 ; i<3 ; i++) cin>> l[i] ;
+    for(int i=0 ; i<3 ; i++) cin>> c[i] ;
+    cin>> n >> s >> t ;
+    s-- ; t-- ;
+    if(s>t) swap(s, t) ;
+    for(int i=1 ; i<n ; i++) cin>> a[i] ;
+    memset(dp, INF, sizeof dp) ;
+    dp[s]=a[0]=0 ;
+    for(int i=s+1 ; i<=t ; i++)
+      for(int j=s ; j<i ; j++)
+        for(int k=0 ; k<3 ; k++)
+          if(a[i]-a[j]<=l[k])
+            dp[i]=min(dp[i], dp[j]+c[k]) ;
+    cout<< dp[t] ;
   }
