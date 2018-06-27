@@ -24,8 +24,27 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    int a, b ;
-    cin>> a >> b ;
-    int sum=a+b ;
-    cout<< sum ;
+    lli n, x, y, idx, X, Y, R=1500000 ;
+    cin>> n ;
+    vi ans(n) ;
+    vector<tuple<lli, lli, lli>> v ;
+    for(int i=0 ; i<n ; i++) cin>> x >> y, v.pb(mt(x, y, i)) ;
+    while(1)
+      {
+        X=Y=0 ;
+        for(auto i:v)
+          {
+            tie(x, y, idx)=i ;
+            if((X+x)*(X+x)+(Y+y)*(Y+y)<(X-x)*(X-x)+(Y-y)*(Y-y)) ans[idx]=1 ;
+            else ans[idx]=-1 ;
+            X+=x*ans[idx] ;
+            Y+=y*ans[idx] ;
+          }
+        if(X*X+Y*Y<=R*R)
+          {
+            for(auto i:ans) cout<< i << " " ;
+            return 0 ;
+          }
+        random_shuffle(all(v)) ;
+      }
   }

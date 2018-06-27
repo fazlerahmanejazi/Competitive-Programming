@@ -24,8 +24,8 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    int a, b ;
-    cin>> a >> b ;
-    int sum=a+b ;
-    cout<< sum ;
+    int a, b, c, n ;
+    cin>> a >> b >> c >> n ;
+    if(a+b-c>=0 && c<=a && c<=b && a+b-c<n) cout<< n-a-b+c ;
+    else cout<< -1 ;
   }

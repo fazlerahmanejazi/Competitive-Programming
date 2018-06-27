@@ -24,8 +24,18 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    int a, b ;
-    cin>> a >> b ;
-    int sum=a+b ;
-    cout<< sum ;
+    int n, ans=0, t ;
+    cin>> n ;
+    vi a(2*n+1) ;
+    for(int i=1 ; i<=2*n ; i++) cin>> a[i] ;
+    for(int i=1 ; i<=2*n ; i++)
+      for(int j=i+1 ; j<=2*n ; j++)
+        if(a[j]==a[i])
+          {
+            ans+=j-i-1 ;
+            t=a[j] ;
+            for(int k=j ; k>i ; k--) a[k]=a[k-1] ;
+            a[i]=t ;
+          }
+    cout<< ans ;
   }

@@ -18,7 +18,7 @@ int query(int idx, int s, int e, int qs, int qe)
     return max(query(2*idx, s, (s+e)/2, qs, qe), query(2*idx+1, (s+e)/2+1, e, qs, qe));
   }
 
-void updateNode(int idx,int s,int e,int pos,int val)
+void updateNode(int idx, int s, int e, int pos, int val)
   {
     if(pos<s || pos>e) return ;
     if(s==e)
@@ -26,7 +26,7 @@ void updateNode(int idx,int s,int e,int pos,int val)
         tree[index]=max(tree[index], val) ;
         return ;
       }
-    updateNode(2*idx, s, (s+e)/2) ;
-    updateNode(2*idx+1, (s+e)/2+1, e) ;
+    updateNode(2*idx, s, (s+e)/2, pos, val) ;
+    updateNode(2*idx+1, (s+e)/2+1, e, pos, val) ;
     tree[idx]=max(tree[2*idx],tree[2*idx+1]) ;
   }

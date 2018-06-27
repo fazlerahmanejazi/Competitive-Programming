@@ -24,8 +24,21 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    int a, b ;
-    cin>> a >> b ;
-    int sum=a+b ;
-    cout<< sum ;
+    string sizes[] = {"M", "S","XS","XXS","XXXS","L","XL","XXL","XXXL"} ;
+    vi X(10, 0), Y(10, 0) ;
+    int n, ans=0 ;
+    string s ;
+    cin>> n ;
+    for(int i=0 ; i<n ; i++)
+      {
+        cin>> s ;
+        for(int j=0 ; j<9 ; j++) if(!s.compare(sizes[j])) X[j]++ ;
+      }
+    for(int i=0 ; i<n ; i++)
+      {
+        cin>> s ;
+        for(int j=0 ; j<9 ; j++) if(!s.compare(sizes[j])) Y[j]++ ;
+      }
+    for(int i=0 ; i<9 ; i++) if(Y[i]<X[i]) ans+=(X[i]-Y[i]) ;
+    cout<< ans ;
   }

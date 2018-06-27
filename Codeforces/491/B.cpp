@@ -21,11 +21,33 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
+int get(vi a, int n)
+  {
+    long double x=0 ;
+    for(int i=0 ; i<n ; i++) x+=a[i] ;
+    x/=n ;
+    return round(x) ;
+  }
+
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    int a, b ;
-    cin>> a >> b ;
-    int sum=a+b ;
-    cout<< sum ;
+    int n ;
+    cin>> n ;
+    vi a(n) ;
+    for(int i=0 ; i<n ; i++) cin>> a[i] ;
+    sort(all(a)) ;
+    if(get(a, n)==5) cout<< 0 ;
+    else
+      {
+        for(int i=0 ; i<n ; i++)
+          {
+            a[i]=5 ;
+            if(get(a, n)==5)
+              {
+                cout<< i+1 ;
+                return 0 ;
+              }
+          }
+      }
   }

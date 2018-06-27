@@ -24,8 +24,8 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    int a, b ;
-    cin>> a >> b ;
-    int sum=a+b ;
-    cout<< sum ;
+    int n, ans=0, d[]={1, 5, 10, 20, 100} ;
+    cin>> n ;
+    for(int i=4 ; i>=0 ; i--) ans+=n/d[i], n%=d[i] ;
+    cout<< ans ;
   }

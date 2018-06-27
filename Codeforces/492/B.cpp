@@ -24,8 +24,16 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    int a, b ;
-    cin>> a >> b ;
-    int sum=a+b ;
-    cout<< sum ;
+    int n, t=0, idx=0, m=inf ;
+    cin>> n ;
+    vi a(n) ;
+    for(int i=0 ; i<n ; i++) cin>> a[i], m=min(m, a[i]) ;
+    m=max((m/n)-1, 0) ;
+    for(int i=0 ; i<n ; i++) a[i]-=n*m ;
+    while(1)
+      {
+        if(a[idx]-t<=0) return cout<< idx+1, 0 ;
+        t++ ;
+        idx=(idx+1)%n ;
+      }
   }
