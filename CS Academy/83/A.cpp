@@ -21,32 +21,40 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-int n, u, v, x, s, dp[100005] ;
-vvi adj ;
+int ans ;
+string s ;
 
-void dfs(int u, int prev)
+bool check(string s)
   {
-    vi temp ;
-    for(auto v:adj[u])
-      if(v!=prev)
+    for(int i=1 ; i<s.length() ; i++) if(s[i]==s[i-1]) return false ;
+    return true ;
+  }
+
+void brute(int idx, string s)
+  {
+    if(idx==s.length())
+      {
+        if(check(s)) ans++ ;
+        return ;
+      }
+    if(s[idx]=='c')
+      for(int i=0 ; i<26 ; i++)
         {
-          dfs(v, u) ;
-          temp.pb(dp[v]) ;
+          s[idx]=i+'a' ;
+          brute(idx+1, s) ;
         }
-    sort(all(temp)) ;
-    reverse(all(temp)) ;
-    for(int i=0 ; i<temp.size() ; i++) dp[u]=max(dp[u], temp[i]+i+1) ;
+    else
+      for(int i=0 ; i<10 ; i++)
+        {
+          s[idx]=i+'0' ;
+          brute(idx+1, s) ;
+        }
   }
 
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    cin>> n ;
-    adj.resize(n+1) ;
-    for(int i=1 ; i<=n ; i++)
-      while(cin>> x && x)
-        adj[i].pb(x), adj[x].pb(i) ;
     cin>> s ;
-    dfs(s, -1) ;
-    cout<< dp[s] ;
+    brute(0, s) ;
+    cout<< ans ;
   }

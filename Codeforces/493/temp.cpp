@@ -21,32 +21,27 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-int n, u, v, x, s, dp[100005] ;
-vvi adj ;
+lli n, ans, d[]={0, 1, 5, 10, 50} ;
+map<lli, bool> check ;
 
-void dfs(int u, int prev)
+void brute(lli idx, lli curr)
   {
-    vi temp ;
-    for(auto v:adj[u])
-      if(v!=prev)
-        {
-          dfs(v, u) ;
-          temp.pb(dp[v]) ;
-        }
-    sort(all(temp)) ;
-    reverse(all(temp)) ;
-    for(int i=0 ; i<temp.size() ; i++) dp[u]=max(dp[u], temp[i]+i+1) ;
+    if(idx==n)
+      {
+        if(!check[curr])
+          {
+            check[curr]=true ;
+            ans++ ;
+          }
+        return ;
+      }
+    for(int i=1 ; i<=4 ; i++) brute(idx+1, curr+d[i]) ;
   }
 
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
     cin>> n ;
-    adj.resize(n+1) ;
-    for(int i=1 ; i<=n ; i++)
-      while(cin>> x && x)
-        adj[i].pb(x), adj[x].pb(i) ;
-    cin>> s ;
-    dfs(s, -1) ;
-    cout<< dp[s] ;
+    brute(0, 0) ;
+    cout<< ans ;
   }

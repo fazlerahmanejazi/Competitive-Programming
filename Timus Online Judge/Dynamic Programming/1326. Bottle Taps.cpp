@@ -21,32 +21,32 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-int n, u, v, x, s, dp[100005] ;
-vvi adj ;
+int n, m, p, c, x, y, z, petr, dp[2097152+100] ;
+vpii a(150) ;
 
-void dfs(int u, int prev)
+int solve(int mask)
   {
-    vi temp ;
-    for(auto v:adj[u])
-      if(v!=prev)
-        {
-          dfs(v, u) ;
-          temp.pb(dp[v]) ;
-        }
-    sort(all(temp)) ;
-    reverse(all(temp)) ;
-    for(int i=0 ; i<temp.size() ; i++) dp[u]=max(dp[u], temp[i]+i+1) ;
+    if(dp[mask]!=inf) return dp[mask] ;
+    for(int i=1 ; i<=n+m ; i++) if(((~a[i].fi)&mask)!=mask) dp[mask]=min(dp[mask], solve((~a[i].fi)&mask)+a[i].se) ;
+    return dp[mask] ;
   }
 
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
     cin>> n ;
-    adj.resize(n+1) ;
-    for(int i=1 ; i<=n ; i++)
-      while(cin>> x && x)
-        adj[i].pb(x), adj[x].pb(i) ;
-    cin>> s ;
-    dfs(s, -1) ;
-    cout<< dp[s] ;
+    for(int i=1 ; i<=n ; i++) cin>> x, a[i]=mp((1<<i), x) ;
+    cin>> m ;
+    for(int i=n+1 ; i<=n+m ; i++)
+      {
+        cin>> c >> x ;
+        z=0 ;
+        for(int j=1 ; j<=x ; j++) cin>> y, z|=(1<<y) ;
+        a[i]=mp(z, c) ;
+      }
+    cin>> p ;
+    for(int i=1 ; i<=p ; i++) cin>> y, petr|=(1<<y) ;
+    memset(dp, inf, sizeof dp) ;
+    dp[0]=0 ;
+    cout<< solve(petr) ;
   }

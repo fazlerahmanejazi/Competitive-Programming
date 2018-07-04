@@ -21,32 +21,17 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-int n, u, v, x, s, dp[100005] ;
-vvi adj ;
-
-void dfs(int u, int prev)
-  {
-    vi temp ;
-    for(auto v:adj[u])
-      if(v!=prev)
-        {
-          dfs(v, u) ;
-          temp.pb(dp[v]) ;
-        }
-    sort(all(temp)) ;
-    reverse(all(temp)) ;
-    for(int i=0 ; i<temp.size() ; i++) dp[u]=max(dp[u], temp[i]+i+1) ;
-  }
-
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    cin>> n ;
-    adj.resize(n+1) ;
-    for(int i=1 ; i<=n ; i++)
-      while(cin>> x && x)
-        adj[i].pb(x), adj[x].pb(i) ;
-    cin>> s ;
-    dfs(s, -1) ;
-    cout<< dp[s] ;
+    lli n, x, y, cnt=0, tot=0, ans=INF ;
+    string s ;
+    cin>> n >> x >> y >> s ;
+    for(int i=0 ; i<n ; i++)
+      if(s[i]=='0') cnt++ ;
+      else if(cnt) cnt=0, tot++ ;
+    if(cnt) tot++ ;
+    for(lli i=0 ; i<tot ; i++) ans=min(ans, i*x+y*(tot-i)) ;
+    if(ans==INF) ans=0 ;
+    cout<< ans ;
   }
