@@ -5,20 +5,19 @@ lli fact[400005] ;
 void init()
   {
     fact[0]=1 ;
-    for (int i=1 ; i<=400000 ; i++)
-      fact[i]=fact[i-1]*i%mod ;
+    for(int i=1 ; i<=400000 ; i++) fact[i]=fact[i-1]*i%mod ;
   }
 
 lli fast_exp(lli base, lli exp)
   {
-    lli res=1;
+    lli res=1 ;
     while(exp>0)
       {
-        if(exp%2==1) res=(res*base)%mod;
-        base=(base*base)%mod;
+        if(exp%2) res=(res*base)%mod ;
+        base=(base*base)%mod ;
         exp/=2;
       }
-    return res%mod;
+    return res%mod ;
   }
 
 lli getInverse(lli n)

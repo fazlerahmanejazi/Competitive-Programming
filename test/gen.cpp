@@ -1,39 +1,32 @@
 #include <bits/stdc++.h>
 using namespace std ;
 
+#define inf 0x3f3f3f3f
+#define INF 1000111000111000111LL
+#define mod 1000000007
+#define pi acos(-1.0)
+#define eps 1e-8
+#define endl '\n'
+#define mp make_pair
+#define mt make_tuple
+#define pb push_back
+#define fi first
+#define se second
+#define all(cc) (cc).begin(),(cc).end()
+using lli = long long int ;
+using pii = pair<int, int> ;
+using vi = vector<int> ;
+using vb = vector<bool> ;
+using vvi = vector<vector<int>> ;
+using vlli = vector<long long int> ;
+using vpii = vector<pair<int, int>> ;
+
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    int T ;
-    cin>> T ;
-    for(int tc=1 ; tc<=T ; tc++)
-      {
-        int ans=0, x ;
-        string s ;
-        cin>> s ;
-        for(auto c:s)
-          {
-            if(c<='O')
-              {
-                x=c-'A' ;
-                ans+=(x%3)+1 ;
-              }
-            else if(c<='S')
-              {
-                x=c-'P' ;
-                ans+=x+1 ;
-              }
-            else if(c<='V')
-              {
-                x=c-'T' ;
-                ans+=x+1 ;
-              }
-            else
-              {
-                x=c-'W' ;
-                ans+=x+1 ;
-              }
-          }
-        cout<< "Case #" << tc << ": " << ans << endl ;
-      }
+    vpii edges ;
+    for(int i=2 ; i<=400 ; i++) edges.pb(mp(1, i)) ;
+    for(int i=2 ; i<=400 ; i++) for(int j=401 ; j<=800 ; j++) edges.pb(mp(i, j)) ;
+    cout<< 800 << " " << edges.size() << " " << 100 << endl ;
+    for(auto i:edges) cout<< i.fi << " " << i.se << endl ;
   }
