@@ -24,6 +24,19 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    vi a(10, 0) ;
-    for(int i=0 ; i<100000 ; i++) cout<< a[i] << " " ;
+    lli n, k, s, e, a, b ;
+    vlli ans ;
+    cin>> n >> k >> s ;
+    e=1 ;
+    if((k*(n-1))<s || k>s) return cout<< "NO", 0 ;
+    cout << "YES" << endl ;
+    a=s/k ; b=s%k ;
+    for(int i=0 ; i<b ;i++)
+      if(e==1) cout << (a+2) << " ", e=a+2 ;
+      else if(e=a+2) cout << 1 << " ", e=1 ;
+    for(int i=b ; i<k ; i++)
+      if(e==a+2) cout << 2 << " ", e=2 ;
+      else if(e==2) cout << a+2 << " ", e=a+2 ;
+      else if(e==1) cout << (a+1) << " ", e=a+1 ;
+      else if(e==a+1) cout << 1 << " ", e=1 ;
   }

@@ -24,6 +24,5 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    vi a(10, 0) ;
-    for(int i=0 ; i<100000 ; i++) cout<< a[i] << " " ;
+
   }

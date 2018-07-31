@@ -21,9 +21,32 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
+int n, x, idx ;
+string s, r ;
+vi ans ;
+
+void perform(int l, int r)
+  {
+    for(int i=r ; i>l ; i--) ans.pb(i), swap(s[i-1], s[i]) ;
+  }
+
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    vi a(10, 0) ;
-    for(int i=0 ; i<100000 ; i++) cout<< a[i] << " " ;
+    cin>> n >> s >> r ;
+    for(int i=0 ; i<n ; i++)
+      if(s[i]!=r[i])
+        {
+          idx=-1 ;
+          for(int j=i ; j<n ; j++)
+            if(s[j]==r[i])
+              {
+                idx=j ;
+                break ;
+              }
+          if(idx==-1) return cout<< -1, 0 ;
+          perform(i, idx) ;
+        }
+    cout<< ans.size() << endl ;
+    for(auto i:ans) cout<< i << " " ;
   }

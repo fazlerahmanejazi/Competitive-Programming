@@ -21,9 +21,32 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
+int n, l, r, m, x, ans=inf ;
+string s ;
+
+bool check(int x)
+  {
+    int cnt=0 ;
+    for(int i=0 ; i<x ; i++) if(s[i]=='1') cnt++ ;
+    for(int i=x ; i<n ; i++)
+      {
+        if(s[i-x]=='1') cnt-- ;
+        if(s[i]=='1') cnt++ ;
+        if(cnt<3) return false ;
+      }
+    return true ;
+  }
+
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    vi a(10, 0) ;
-    for(int i=0 ; i<100000 ; i++) cout<< a[i] << " " ;
+    cin>> n >> s ;
+    l=1 ; r=n ;
+    while(l<=r)
+      {
+        m=(l+r)/2 ;
+        if(check(m)) ans=min(ans, m), r=m-1 ;
+        else l=m+1 ;
+      }
+    cout<< ans ;
   }

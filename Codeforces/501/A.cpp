@@ -24,6 +24,17 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    vi a(10, 0) ;
-    for(int i=0 ; i<100000 ; i++) cout<< a[i] << " " ;
+    int n, m, l, r ;
+    cin>> n >> m ;
+    vpii a ;
+    vi ans ;
+    for(int i=0 ; i<n ; i++) cin>> l >> r, a.pb(mp(l, r)) ;
+    for(int i=1 ; i<=m ; i++)
+      {
+        bool check=true ;
+        for(auto j:a) if(j.fi<=i && i<=j.se) check=false ;
+        if(check) ans.pb(i) ;
+      }
+    cout<< ans.size() << endl ;
+    for(auto i:ans) cout<< i << " " ;
   }
