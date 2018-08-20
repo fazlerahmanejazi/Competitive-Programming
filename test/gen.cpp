@@ -24,6 +24,23 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    vi a(10, 0) ;
-    for(int i=0 ; i<100000 ; i++) cout<< a[i] << " " ;
+    lli n, u, v, x, dp[600][600], ans ;
+    cin>> n ;
+    vlli a, res(n, 0) ;
+    for(int i=1 ; i<=n ; i++)
+      for(int j=1 ; j<=n ; j++)
+        cin>> dp[i][j] ;
+    for(int i=1 ; i<=n ; i++) cin>> x , a.pb(x) ;
+    reverse(all(a)) ;
+    for(int k=0 ; k<n ; k++)
+      {
+        for(int i=1 ; i<=n ; i++)
+          for(int j=1 ; j<=n ; j++)
+            dp[i][j]=min(dp[i][j], dp[i][a[k]]+dp[a[k]][j]) ;
+        for(int i=0 ; i<=k ; i++)
+          for(int j=0 ; j<=k ; j++)
+            res[k]+=dp[a[i]][a[j]] ;
+      }
+    reverse(all(res)) ;
+    for(auto i:res) cout<< i << " " ;
   }

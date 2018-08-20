@@ -45,3 +45,30 @@ struct fenwick {
         return res;
     }
 };
+
+
+let f be the matrix representation of your trie
+
+let f[k] be the list of links for the k-th node
+
+let f[k][x] = m, the node who represents the son of k-th node using x-th character, m = -1 is there is not a link.
+
+int MAX = Max number of nodes
+int CHARSET = alphabet size
+int ROOT = 0
+int sz = 1;
+
+f[MAX][CHARSET]
+
+void init() {
+ fill(f, -1);
+}
+
+void insert(char [] s) {
+ int node = ROOT;
+ for (int i = 0; i < size(s); i++) {
+   if ( f[node][ s[i] ] == -1 )
+      f[node][ s[i] ] = sz++;
+   node = f[node][ s[i] ];
+ }
+}

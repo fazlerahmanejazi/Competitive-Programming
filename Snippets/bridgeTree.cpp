@@ -1,6 +1,6 @@
 int n, m, u, v, x, C, T, diameter ;
 vvi tree ;
-vector<vpii> adj ;
+vector<vpii> adj ; //pair stores next neigbour vertex and corresponding edge number
 vb visit, bridge ;
 vi parent, low, disc, path, component, f, g ;
 

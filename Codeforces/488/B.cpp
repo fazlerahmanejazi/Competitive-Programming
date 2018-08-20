@@ -24,5 +24,23 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-
+    lli n, k, idx, p, c, x ;
+    cin>> n >> k ;
+    vlli ans(n, 0) ;
+    vector<tuple<lli, lli, lli>> a(n) ;
+    multiset<lli> temp ;
+    for(int i=0 ; i<n ; i++) cin>> get<0>(a[i]) ;
+    for(int i=0 ; i<n ; i++) cin>> get<1>(a[i]) ;
+    for(int i=0 ; i<n ; i++) get<2>(a[i])=i ;
+    sort(all(a)) ;
+    for(auto i:a)
+      {
+        tie(p, c, idx)=i ;
+        x=k ;
+        ans[idx]+=c ;
+        auto it=temp.begin() ;
+        while(it!=temp.end() && x--) ans[idx]-=*it, it++ ;
+        temp.insert(-c) ;
+      }
+    for(auto i:ans) cout<< i << " " ;
   }

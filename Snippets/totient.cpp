@@ -7,6 +7,6 @@ void computeTotient()
       if(phi[p]==p)
         {
           phi[p]=p-1 ;
-          for(int i=2*p ; i<=1000000 ; i+=p) phi[i]=(phi[i]/p)*(p-1) ;
+          for(int i=2*p ; i<=1000000 ; i+=p) phi[i]-=phi[i]/p ;
         }
   }
