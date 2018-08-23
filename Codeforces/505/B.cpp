@@ -21,18 +21,33 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
+lli n, x, y ;
+set<lli> p ;
+vector<pair<lli, lli>> a ;
+
+void calc(lli x)
+  {
+    for(lli i=2 ; i*i<=x ; i++)
+      if(!(x%i))
+        {
+          p.insert(i) ;
+          while(!(x%i)) x/=i ;
+        }
+    if(x!=1) p.insert(x) ;
+  }
+
+bool check(lli x)
+  {
+    for(int i=0 ; i<n ; i++) if(a[i].fi%x && a[i].se%x) return false ;
+    return true ;
+  }
+
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    lli n, x, y, lcm=1, g ;
     cin>> n ;
-    for(int i=0 ; i<n ; i++)
-      {
-        cin>> x >> y ;
-        lcm=x*(y/__gcd(x, y)) ;
-        g=__gcd(g, lcm) ;
-      }
-    if(g==1) return cout<< -1, 0 ;
-    for(lli i=2 ; i<=100000 ; i++) if(!(g%i)) return cout<< i, 0 ;
-    cout<< g ;
+    for(int i=0 ; i<n ; i++) cin>> x >> y, a.pb(mp(x, y)) ;
+    calc(a[0].fi) ; calc(a[0].se) ;
+    for(auto i:p) if(check(i)) return cout<< i, 0 ;
+    cout<< -1 ;
   }

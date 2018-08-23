@@ -28,6 +28,7 @@ int main()
     bool pos=true, check=false ;
     string s, t ;
     cin>> n >> m >> s >> t ;
+    if(n-1>m) return cout<< "NO", 0 ;
     for(auto i:s) if(i=='*') check=true ;
     if(check)
       {
@@ -45,7 +46,6 @@ int main()
               idx2=m-i-1 ;
               break ;
             }
-        if(n-1>m) pos=false ;
         for(int i=idx1 ; i<=idx2 ; i++) if(t[i]<'a' || t[i]>'z') pos=false ;
       }
     else pos&=(s==t) ;
