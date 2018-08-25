@@ -35,7 +35,7 @@ void init()
     distS.assign(n+1, INF) ; distT.assign(n+1, INF) ;
   }
 
-void dijsktra(int start, vlli &dist, vlli &dp)
+void dijkstra(int start, vlli &dist, vlli &dp)
   {
     dist[start]=0 ;
     dp[start]=1 ;
@@ -94,8 +94,8 @@ int main()
         adj[v].pb(mp(u, w)) ;
         edges.pb(mt(u, v, w)) ;
       }
-    dijsktra(s, distS, dpS) ;
-    dijsktra(t, distT, dpT) ;
+    dijkstra(s, distS, dpS) ;
+    dijkstra(t, distT, dpT) ;
     calc() ;
     cout<< ans ;
   }
