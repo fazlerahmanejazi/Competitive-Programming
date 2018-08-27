@@ -51,8 +51,6 @@ void add(lli x)
     y=val[rev[x]] ;
     cnt[y]++ ;
     for(int i=0 ; i<=LG ; i++) curr+=cnt[(y^(1<<i))] ;
-      //if(y&(1<<i)) curr+=cnt[(y^(1<<i))] ;
-      //else curr+=cnt[(y|(1<<i))] ;
   }
 
 void del(lli x)
@@ -60,8 +58,6 @@ void del(lli x)
     y=val[rev[x]] ;
     cnt[y]-- ;
     for(int i=0 ; i<=LG ; i++) curr-=cnt[(y^(1<<i))] ;
-      //if(y&(1<<i)) curr-=cnt[(y^(1<<i))] ;
-      //else curr-=cnt[(y|(1<<i))] ;
   }
 
 int main()
