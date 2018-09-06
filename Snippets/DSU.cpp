@@ -29,3 +29,21 @@ template<class T, int SZ> struct DSU
         if(x!=y) p[x]=y ;
       }
   } ;
+
+template<class T> struct DSU
+  {
+    map<T, T> par ;
+    T comp_sz=n ; //initial component size
+    T get(T u)
+      {
+        if(par.find(u)==par.end()) return u ;
+        return par[u]=get(par[u]) ;
+      }
+    void unite(T x, T y)
+      {
+        T X=get(x), Y=get(y) ;
+        if(X==Y) return ;
+        par[Y]=X ;
+        --comp_sz ;
+      }
+  } ;

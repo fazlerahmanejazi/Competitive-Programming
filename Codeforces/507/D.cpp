@@ -24,47 +24,32 @@ using vpii = vector<pair<int, int>> ;
 lli n, k, m, l, r, x ;
 string q ;
 
-static random_device rd ;
-static mt19937 rng(rd()) ;
-
-lli dice()
-  {
-    uniform_int_distribution<lli> uid(l, r) ;
-    return uid(rng) ;
-  }
-
-void query(lli L, lli R)
+bool query(lli L, lli R)
   {
     cout<< L << " " << R << endl ;
     cin>> q ;
+    return q[0]=='Y' ;
   }
 
 void reduceRange()
   {
-    l=1 ; r=n ;
-    while(r-l>5*k)
+    while(r-l>6*k+10)
       {
         m=(l+r)/2 ;
-        query(l, m) ;
-        if(q[0]=='Y') l=max(l-k, 1LL), r=min(m+k, n) ;
+        if(query(l, m)) l=max(l-k, 1LL), r=min(m+k, n) ;
         else l=max(m-k, 1LL), r=min(r+k, n) ;
       }
-  }
-
-void solve()
-  {
-    while(1)
-      {
-        x=dice() ;
-        query(x, x) ;
-        if(q[0]=='Y') return ;
-      }
+    x=l+(rand()%(r-l+1)) ;
+    if(query(x, x)) exit(0) ;
+    l=max(l-k, 1LL) ;
+    r=min(r+k, n) ;
   }
 
 int main()
   {
     //ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
+    srand(time(0)) ;
     cin>> n >> k ;
-    reduceRange() ;
-    solve() ;
+    l=1 ; r=n ;
+    while(1) reduceRange() ;
   }
