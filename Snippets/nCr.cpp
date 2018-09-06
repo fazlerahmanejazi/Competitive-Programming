@@ -11,6 +11,7 @@ void init()
 lli fast_exp(lli base, lli exp)
   {
     lli res=1 ;
+    base=base%mod ;
     while(exp>0)
       {
         if(exp%2) res=(res*base)%mod ;
