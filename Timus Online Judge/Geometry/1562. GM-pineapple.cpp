@@ -21,8 +21,22 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<lli, lli>> ;
 
+int n ;
+long double a, b, curr ;
+
+long double ellipsoidalCap(long double h)
+  {
+    return (pi*a*a*h*h*(3*b-h))/(3*b*b) ;
+  }
+
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    
+    cin>> a >> b >> n ;
+    a/=2 ; b/=2 ;
+    for(int i=1 ; i<=n ; i++)
+      {
+        curr=ellipsoidalCap(i*(2*b)/n)-ellipsoidalCap((i-1)*(2*b)/n) ;
+        cout<< fixed << setprecision(9) << curr << endl ;
+      }
   }

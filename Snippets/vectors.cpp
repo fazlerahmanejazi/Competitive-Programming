@@ -36,3 +36,15 @@ template<typename T> T pointToLine(const V<T> &a, const V<T> &b, const V<T> &p)
     V<T> z=b+v*c3 ;
     return length(p-z) ;
   }
+
+//NOT TESTED
+template<typename T> T pointToLineSegment(const V<T> &a, const V<T> &b, const V<T> &p)
+  {
+    V<T> ap=a-p ;
+    V<T> ab=a-b ;
+    V<T> c ;
+    T x=dot(ap, ab)/length(ab) ;
+    if(x<0) return length(p-a) ;
+    else if(x>1) return length(p-b) ;
+    else return pointToLine(a, b, p) ;
+  }

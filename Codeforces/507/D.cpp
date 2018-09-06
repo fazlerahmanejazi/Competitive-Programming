@@ -21,7 +21,7 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-lli n, k, l, r, m, L, R, x, mx=1000000000000000000 ;
+lli n, k, m, l, r, x ;
 string q ;
 
 static random_device rd ;
@@ -29,47 +29,30 @@ static mt19937 rng(rd()) ;
 
 lli dice()
   {
-      uniform_int_distribution<lli> uid(L, R) ;
-      return uid(rng) ;
+    uniform_int_distribution<lli> uid(l, r) ;
+    return uid(rng) ;
   }
 
-void query(lli l, lli r)
+void query(lli L, lli R)
   {
-    cout<< l << " " << r << endl ;
+    cout<< L << " " << R << endl ;
     cin>> q ;
   }
 
-lli getR()
+void reduceRange()
   {
-    lli res=mx ;
-    l=1 ; r=mx ;
-    while(l<=r)
+    l=1 ; r=n ;
+    while(r-l>5*k)
       {
         m=(l+r)/2 ;
-        query(1, m) ;
-        if(q[0]=='Y') res=min(res, m), r=m-1 ;
-        else l=m+1 ;
+        query(l, m) ;
+        if(q[0]=='Y') l=max(l-k, 1LL), r=min(m+k, n) ;
+        else l=max(m-k, 1LL), r=min(r+k, n) ;
       }
-    return min(mx, res+100*k) ;
-  }
-
-lli getL()
-  {
-    lli res=0 ;
-    l=1 ; r=mx ;
-    while(l<=r)
-      {
-        m=(l+r)/2 ;
-        query(m, mx) ;
-        if(q[0]=='Y') res=max(res, m), l=m+1 ;
-        else r=m-1 ;
-      }
-    return max(1LL, res-100*k) ;
   }
 
 void solve()
   {
-    L=getL() ; R=getR() ;
     while(1)
       {
         x=dice() ;
@@ -81,6 +64,7 @@ void solve()
 int main()
   {
     //ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    cin>> mx >> k ;
+    cin>> n >> k ;
+    reduceRange() ;
     solve() ;
   }
