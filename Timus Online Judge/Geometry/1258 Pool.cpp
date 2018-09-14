@@ -21,31 +21,18 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<lli, lli>> ;
 
-int numCPUCycles(int n, int d, int c1, int c2) {
-    long long int ans=0, x ;
-    while(n>1)
-    {
-        if(n%d)
-        {
-            x=n%d ;
-            n-=x ;
-            ans+=c1*x ;
-        }
-        while(!(n%d) && (n-n/d)*c1>=c2)
-        {
-            n/=d ;
-            ans+=c2 ;
-        }
-    }
-    return ans ;
-
-}
-
-
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    int n, d, c1, c2 ;
-    cin>> n >> d >> c1 >> c2 ;
-    cout<< numCPUCycles(n, d, c1, c2) ;
+    lli w, d, x, y, dx=0, dy=0, x1, y1 ;
+    string s ;
+    cin>> w >> d >> x >> y >> x1 >> y1 >> s ;
+    for(auto i:s)
+      if(i=='F') dy+=y, y=0 ;
+      else if(i=='B') dy+=d-y, y=d ;
+      else if(i=='R') dx+=w-x, x=w ;
+      else dx+=x, x=0 ;
+    dx+=abs(x-x1) ;
+    dy+=abs(y-y1) ;
+    cout<< fixed << setprecision(9) << sqrt(double(dx*dx+dy*dy)) ;
   }

@@ -12,7 +12,7 @@ template<typename T> class V
   } ;
 
 template<typename T> T length(const V<T> &v) { return sqrt(v.x*v.x+v.y*v.y+v.z*v.z) ; }
-template<typename T> T dot(const V<T> &a, const V<T> &b) { return a.x*b.x+a.y*b.y+a.z*b.z ; }
+template<typename T> T dot(const V<T> &a, const V<T> &b) { return a.x*b.x+a.y*b.y+a.z*b.z ; } //dot squared
 template<typename T> V<T> cross(const V<T> &a, const V<T> &b) { return V<T>( a.y*b.z-a.z*b.y, a.z*b.x-a.x*b.z, a.x*b.y-a.y*b.x) ; }
 
 template<typename T> void normalize(V<T> &v)

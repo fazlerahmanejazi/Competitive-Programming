@@ -14,38 +14,33 @@ using namespace std ;
 #define se second
 #define all(cc) (cc).begin(),(cc).end()
 using lli = long long int ;
-using pii = pair<lli, lli> ;
+using pii = pair<int, int> ;
 using vi = vector<int> ;
 using vb = vector<bool> ;
 using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
-using vpii = vector<pair<lli, lli>> ;
+using vpii = vector<pair<int, int>> ;
 
-int numCPUCycles(int n, int d, int c1, int c2) {
-    long long int ans=0, x ;
-    while(n>1)
-    {
-        if(n%d)
-        {
-            x=n%d ;
-            n-=x ;
-            ans+=c1*x ;
-        }
-        while(!(n%d) && (n-n/d)*c1>=c2)
-        {
-            n/=d ;
-            ans+=c2 ;
-        }
-    }
-    return ans ;
-
-}
-
+long double fast_exp(long double x, int d)
+  {
+    long double ret=1, piv=x ;
+    while(d)
+      {
+        if(d&1) ret=ret*piv ;
+        piv=piv*piv ;
+        d>>=1 ;
+      }
+    return ret ;
+  }
 
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    int n, d, c1, c2 ;
-    cin>> n >> d >> c1 >> c2 ;
-    cout<< numCPUCycles(n, d, c1, c2) ;
+    lli n, m ;
+    long double res=0, d ;
+    cin>> m >> n ;
+    d=m ;
+    for(int i=1 ; i<=m ; i++)
+      res+=i*(fast_exp(i/d, n)-fast_exp((i-1)/d, n)) ;
+    cout<< fixed << setprecision(9) << res ;
   }
