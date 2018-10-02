@@ -24,5 +24,16 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-
+    int n, q, x, ans ;
+    cin>> n ;
+    vi a(n) ;
+    for(int i=0 ; i<n ; i++) cin>> a[i] ;
+    sort(all(a)) ;
+    cin>> q ;
+    for(int i=0 ; i<q ; i++)
+      {
+        cin>> x ;
+        ans=upper_bound(all(a), x)-a.begin() ;
+        cout<< ans << endl ;
+      }
   }

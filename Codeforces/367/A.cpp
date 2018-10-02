@@ -24,5 +24,14 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-
+    long double ans=INF, a, b, x, y, v, d ;
+    int n ;
+    cin>> a >> b >> n ;
+    for(int i=0 ; i<n ; i++)
+      {
+        cin>> x >> y >> v ;
+        d=sqrt((a-x)*(a-x)+(b-y)*(b-y)) ;
+        ans=min(ans, d/v) ;
+      }
+    cout<< fixed << setprecision(9) << ans ;
   }
