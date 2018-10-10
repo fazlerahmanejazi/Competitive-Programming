@@ -10,3 +10,16 @@ void computeTotient()
           for(int i=2*p ; i<=1000000 ; i+=p) phi[i]-=phi[i]/p ;
         }
   }
+
+long long int phi(long long int n)
+  {
+    long long int res=n ;
+    for(long long int p=2 ; p*p<=n ; p++)
+      if(!(n%p))
+        {
+          while(!(n%p)) n/=p ;
+          res-=res/p ;
+        }
+    if(n>1) res-=res/n ;
+    return res ;
+  }

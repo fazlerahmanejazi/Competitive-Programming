@@ -21,40 +21,55 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-lli n, x, dp[200005][2], f[2] ;
-vlli col ;
-vvi adj ;
+long long int A, B ;
 
-void dfs(int u, int prev)
+long long int phi(long long int n)
   {
-    dp[u][1]=col[u] ;
-    dp[u][0]=1-col[u] ;
-    for(auto v:adj[u])
-      if(v!=prev)
+    long long int res=n ;
+    for(long long int p=2 ; p*p<=n ; p++)
+      if(!(n%p))
         {
-          dfs(v, u) ;
-          f[0]=dp[u][0] ;
-          f[1]=dp[u][1] ;
-          dp[u][0]=dp[u][1]=0 ;
-          dp[u][1]=(dp[u][1]+f[1]*dp[v][0]+f[0]*dp[v][1])%mod ;
-          dp[u][0]=(dp[u][0]+f[0]*dp[v][0]+f[0]*dp[v][1])%mod ;
-          dp[u][1]=(dp[u][1]+f[1]*dp[v][1])%mod ;
+          while(!(n%p)) n/=p ;
+          res-=res/p ;
         }
+    if(n>1) res-=res/n ;
+    return res ;
+  }
+
+long long int phi2(long long int n, long long int a)
+  {
+    long long int res=n ;
+    vector<int> temp ;
+    for(long long int p=2 ; p*p<=a ; p++)
+      if(!(a%p))
+        {
+          while(!(a%p)) a/=p ;
+          temp.push_back(p) ;
+        }
+    if(a>1) temp.push_back(a) ;
+    for(auto p:temp)
+      if(!(n%a))
+        {
+          while(!(n%p)) n/=p ;
+          res+=res/p ;
+        }
+    if(n>1) res+=res/n ;
+    return res ;
+  }
+
+long long int solve()
+  {
+    long long int ans=phi(A*B) ;
+    long long int x=__gcd(A, B) ;
+    long long int a=A/x, b=B/x ;
+    ans+=phi2(A*B, a) ;
+    ans+=phi2(A*B, b) ;
+    return ans ;
   }
 
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    cin>> n ;
-    adj.resize(n+1) ;
-    col.resize(n+1) ;
-    for(int i=2 ; i<=n ; i++)
-      {
-        cin>> x ;
-        adj[i].pb(x+1) ;
-        adj[x+1].pb(i) ;
-      }
-    for(int i=1 ; i<=n ; i++) cin>> col[i] ;
-    dfs(1, -1) ;
-    cout<< dp[1][1] ;
+    cin>> A >> B ;
+    cout<< phi(A) << " " << phi(B) << " " << solve() ;
   }
