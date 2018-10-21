@@ -1,3 +1,5 @@
+//par[root]=root ;
+
 const int N=200000+100 ;
 const int L=20 ;
 
