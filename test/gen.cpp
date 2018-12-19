@@ -1,46 +1,22 @@
-#include <bits/stdc++.h>
-using namespace std ;
-
-#define inf 0x3f3f3f3f
-#define INF 1000111000111000111LL
-#define mod 1000000007
-#define pi acos(-1.0)
-#define eps 1e-8
-#define endl '\n'
-#define mp make_pair
-#define mt make_tuple
-#define pb push_back
-#define fi first
-#define se second
-#define all(cc) (cc).begin(),(cc).end()
-using lli = long long int ;
-using pii = pair<int, int> ;
-using vi = vector<int> ;
-using vb = vector<bool> ;
-using vvi = vector<vector<int>> ;
-using vlli = vector<long long int> ;
-using vpii = vector<pair<int, int>> ;
-
-int main()
+int fuction(vector<int> arr)
   {
-    ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    lli n, u, v, x, dp[600][600], ans ;
-    cin>> n ;
-    vlli a, res(n, 0) ;
-    for(int i=1 ; i<=n ; i++)
-      for(int j=1 ; j<=n ; j++)
-        cin>> dp[i][j] ;
-    for(int i=1 ; i<=n ; i++) cin>> x , a.pb(x) ;
-    reverse(all(a)) ;
-    for(int k=0 ; k<n ; k++)
-      {
-        for(int i=1 ; i<=n ; i++)
-          for(int j=1 ; j<=n ; j++)
-            dp[i][j]=min(dp[i][j], dp[i][a[k]]+dp[a[k]][j]) ;
-        for(int i=0 ; i<=k ; i++)
-          for(int j=0 ; j<=k ; j++)
-            res[k]+=dp[a[i]][a[j]] ;
-      }
-    reverse(all(res)) ;
-    for(auto i:res) cout<< i << " " ;
+    sort(arr.begin(), arr.end()) ;
+    int n=arr.size(), ans=arr[0], last=arr[0] ;
+    for(int i=1 ; i<n ; i++)
+      if(arr[i]>last) ans+=arr[i], last=arr[i] ;
+      else ans+=(++last) ;
+    return ans ;
+  }
+
+
+int shortestPalindrome(string s)
+  {
+    int n=s.size() ;
+    int dp[n+1][n+1], l, r ;
+    memset(dp, 0, sizeof dp) ;
+    for(int sz=1 ; sz<n ; sz++ )
+      for(int i=0, j=sz ; j<n ; i++, j++)
+        if(s[i]==s[j]) dp[i][j]=dp[i+1][j-1]
+        else dp[i][j]=min(dp[i][j-1], dp[i+1][j])+1 ;
+    return dp[0][n-1] ;
   }

@@ -23,7 +23,7 @@ void updateNode(int idx, int s, int e, int pos, int val)
     if(pos<s || pos>e) return ;
     if(s==e)
       {
-        tree[index]=max(tree[index], val) ;
+        tree[idx]=max(tree[idx], val) ;
         return ;
       }
     updateNode(2*idx, s, (s+e)/2, pos, val) ;
