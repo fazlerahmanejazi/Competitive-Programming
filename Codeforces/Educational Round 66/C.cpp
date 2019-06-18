@@ -21,9 +21,9 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-int check(int x, vi &a, int k)
+lli check(lli x, vlli &a, lli k)
   {
-    vi temp ;
+    vlli temp ;
     for(auto i:a) temp.pb(abs(x-i)) ;
     sort(all(temp)) ;
     return temp[k] ;
@@ -36,25 +36,21 @@ int main()
     cin>> T ;
     while(T--)
       {
-        int n, k, lo, hi, mn, ans ;
+        lli n, k, lo, hi, mn, ans ;
         cin>> n >> k ;
-        vi a(n), b ;
-        for(int i=0 ; i<n ; i++) cin>> a[i], b.pb(a[i]) ;
-        for(int i=1 ; i<n ; i++)
-          if(a[i]-a[i-1]>1)
-            b.pb((a[i]+a[i-1])/2) ;
-        sort(all(b)) ;
-        lo=0 ; hi=b.size()-1 ;
+        vlli a(n) ;
+        for(int i=0 ; i<n ; i++) cin>> a[i] ;
+        lo=0 ; hi=a.back() ;
         while(lo<hi-2)
           {
-            int m1=(lo*2+hi)/3 ;
-            int m2=(lo+hi*2)/3 ;
-            if(check(b[m1], a, k)<check(b[m2], a, k)) hi=m2 ;
+            lli m1=(lo*2+hi)/3 ;
+            lli m2=(lo+hi*2)/3 ;
+            if(check(m1, a, k)<check(m2, a, k)) hi=m2 ;
             else lo=m1 ;
           }
-        mn=check(b[lo], a, k) ;
-        ans=b[lo] ;
-        for(int i=lo ; i<=hi ; i++) if(check(b[i], a, k)<mn) mn=check(b[i], a, k), ans=b[i] ;
+        mn=check(lo, a, k) ;
+        ans=lo ;
+        for(int i=lo ; i<=hi ; i++) if(check(i, a, k)<mn) mn=check(i, a, k), ans=i ;
         cout<< ans << endl ;
       }
   }
