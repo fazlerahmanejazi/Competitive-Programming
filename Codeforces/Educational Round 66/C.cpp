@@ -21,14 +21,6 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-lli check(lli x, vlli &a, lli k)
-  {
-    vlli temp ;
-    for(auto i:a) temp.pb(abs(x-i)) ;
-    sort(all(temp)) ;
-    return temp[k] ;
-  }
-
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
@@ -36,21 +28,15 @@ int main()
     cin>> T ;
     while(T--)
       {
-        lli n, k, lo, hi, mn, ans ;
+        lli n, k, x, mn=INF, ans ;
         cin>> n >> k ;
         vlli a(n) ;
         for(int i=0 ; i<n ; i++) cin>> a[i] ;
-        lo=0 ; hi=a.back() ;
-        while(lo<hi-2)
+        for(int i=0 ; i+k<n ; i++)
           {
-            lli m1=(lo*2+hi)/3 ;
-            lli m2=(lo+hi*2)/3 ;
-            if(check(m1, a, k)<check(m2, a, k)) hi=m2 ;
-            else lo=m1 ;
+            x=(a[i+k]-a[i]+1)/2 ;
+            if(x<mn) mn=x, ans=(a[i+k]+a[i])/2 ;
           }
-        mn=check(lo, a, k) ;
-        ans=lo ;
-        for(int i=lo ; i<=hi ; i++) if(check(i, a, k)<mn) mn=check(i, a, k), ans=i ;
         cout<< ans << endl ;
       }
   }

@@ -24,12 +24,19 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    int tc=0, n, k, x ;
-		while(cin>> n >> k && ++tc)
-			{
-				cout<< tc << endl ;
-				cout<< n << " " << k << endl ;
-				for(int i=0 ; i<n ; i++) cin>> x, cout<< x << " " ;
-				cout<< endl << endl ;
-			}
+    lli n, mx=0, curr, g, ans=0 ;
+    cin>> n ;
+    vlli a ;
+    for(int i=1 ; i<=n ; i++) a.pb(i) ;
+    do
+    {
+      set<lli> temp ;
+      g=a[0] ;
+      temp.insert(g) ;
+      for(int i=1 ; i<n ; i++) g=__gcd(g, a[i]), temp.insert(g) ;
+      curr=temp.size() ;
+      if(curr>mx) mx=curr, ans=1 ;
+      else if(curr==mx) ans++ ;
+    } while(next_permutation(all(a))) ;
+    cout<< ans ;
   }
