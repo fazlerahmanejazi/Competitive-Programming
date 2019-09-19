@@ -21,96 +21,88 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
+void input_farm(vector<vlli> &farm, lli &n, lli &m)
+  {
+    lli x ;
+    for(int i=0 ; i<n ; i++)
+      for(int j=0 ; j<m ; j++)
+        cin>> x, farm[i].pb(x) ;
+    if(n<=m) return ;
+    vector<vlli> temp(m) ;
+    for(int i=0 ; i<n ; i++)
+      for(int j=0 ; j<m ; j++)
+        temp[j].pb(farm[i][j]) ;
+    farm=temp ;
+    swap(n, m) ;
+  }
+
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
     lli n, m, x, y, val, x1, x2, idx1, idx2, ans=0, curr ;
     cin>> n >> m ;
-    vector<vlli> farm(n), farm1, sum(n, vlli(m)) ;
+    vector<vlli> farm(n) ;
+    input_farm(farm, n, m) ;
     vlli rs(n), cs(m) ;
-    priority_queue<tuple<lli, lli, lli>> pq ;
-    priority_queue<pair<lli, lli>> r, c, temp ;
-    for(int i=0 ; i<n ; i++)
-      for(int j=0 ; j<m ; j++)
-        cin>> x, farm[i].pb(x) ;
-    farm1=farm ;
     for(int i=0 ; i<n ; i++)
       {
-        x=0 ;
-        for(int j=0 ; j<m ; j++) x+=farm[i][j] ;
-        r.push(mp(x, i)) ;
-      }
-    for(int i=0 ; i<m ; i++)
-      {
-        x=0 ;
-        for(int j=0 ; j<n ; j++) x+=farm[j][i] ;
-        c.push(mp(x, i)) ;
-      }
-    for(int i=0 ; i<4 ; i++)
-      {
-        tie(x1, idx1)=r.top() ;
-        tie(x2, idx2)=c.top() ;
-        if(x1>x2)
-          {
-            ans+=x1 ;
-            r.pop() ;
-            r.push(mp(0, idx1)) ;
-            while(!c.empty())
-              {
-                tie(x2, idx2)=c.top() ;
-                x2-=farm1[idx1][idx2] ;
-                farm1[idx1][idx2]=0 ;
-                temp.push(mp(x2, idx2)) ;
-                c.pop() ;
-              }
-            while(!temp.empty()) c.push(temp.top()), temp.pop() ;
-          }
-        else
-          {
-            ans+=x2 ;
-            c.pop() ;
-            c.push(mp(0, idx2)) ;
-            while(!r.empty())
-              {
-                tie(x1, idx1)=r.top() ;
-                x1-=farm1[idx1][idx2] ;
-                farm1[idx1][idx2]=0 ;
-                temp.push(mp(x1, idx1)) ;
-                r.pop() ;
-              }
-            while(!temp.empty()) r.push(temp.top()), temp.pop() ;
-          }
-      }
-     for(int i=0 ; i<n ; i++)
-       {
          x=0 ;
          for(int j=0 ; j<m ; j++) x+=farm[i][j] ;
          rs[i]=x ;
-       }
-     for(int i=0 ; i<m ; i++)
-       {
+      }
+    for(int i=0 ; i<m ; i++)
+      {
          x=0 ;
          for(int j=0 ; j<n ; j++) x+=farm[j][i] ;
          cs[i]=x ;
-       }
-     for(int i=0 ; i<n ; i++)
-       for(int j=0 ; j<m ; j++)
-         {
-           sum[i][j]=rs[i]+cs[j]-farm[i][j] ;
-           pq.push(mt(sum[i][j], i, j)) ;
-         }
-     while(!pq.empty())
-       {
-         tie(val, x, y)=pq.top() ; pq.pop() ;
-         for(int i=0 ; i<n ; i++)
-           for(int j=0 ; j<m ; j++)
-               {
-                 if(i==x && j==y) curr=val ;
-                 else if(i==x) curr=val+cs[j]-farm[i][j] ;
-                 else if(j==y) curr=val+rs[i]-farm[i][j] ;
-                 else curr=val+sum[i][j]-farm[x][j]-farm[i][y] ;
-                 ans=max(ans, curr) ;
-               }
-       }
+      }
+    if(n<5 || m<5)
+      {
+        for(int i=0 ; i<n ; i++)
+          for(int j=0 ; j<m ; j++)
+            ans+=farm[i][j] ;
+      }
+    else
+      {
+        for(int i=0 ; i<n ; i++)
+          for(int j=i+1 ; j<n ; j++)
+            {
+              curr=rs[i]+rs[j] ;
+              lli mx1=cs[0]-farm[i][0]-farm[j][0], mx2=cs[1]-farm[i][1]-farm[j][1], mx ;
+              if(mx1<mx2) swap(mx1, mx2) ;
+              for(int k=2 ; k<m ; k++)
+                {
+                  mx=cs[k]-farm[i][k]-farm[j][k] ;
+                  if(mx>mx1) mx2=mx1, mx1=mx ;
+                  else if(mx>mx2) mx2=mx ;
+                }
+              curr+=mx1+mx2 ;
+              ans=max(ans, curr) ;
+            }
+        for(int i=0 ; i<n ; i++)
+          {
+            curr=rs[i] ;
+            vlli temp ;
+            for(int k=0 ; k<m ; k++) temp.pb(cs[k]-farm[i][k]) ;
+            sort(all(temp)) ;
+            curr+=temp[m-1]+temp[m-2]+temp[m-3] ;
+            ans=max(ans, curr) ;
+          }
+        for(int i=0 ; i<m ; i++)
+          {
+            curr=cs[i] ;
+            vlli temp ;
+            for(int k=0 ; k<n ; k++) temp.pb(rs[k]-farm[k][i]) ;
+            sort(all(temp)) ;
+            curr+=temp[m-1]+temp[m-2]+temp[m-3] ;
+            ans=max(ans, curr) ;
+          }
+        sort(all(rs)) ;
+        curr=rs[n-1]+rs[n-2]+rs[n-3]+rs[n-4] ;
+        ans=max(ans, curr) ;
+        sort(all(cs)) ;
+        curr=cs[m-1]+cs[m-2]+cs[m-3]+cs[m-4] ;
+        ans=max(ans, curr) ;
+      }
     cout<< ans ;
   }
