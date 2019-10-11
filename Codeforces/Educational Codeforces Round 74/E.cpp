@@ -24,20 +24,5 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    int q, n, ans ;
-    bool pos ;
-    cin>> q ;
-    while(q--)
-      {
-        string s, t ;
-        cin>> s >> t ;
-        n=s.length() ;
-        pos=false ;
-        for(int i=0 ; i<n ; i++)
-          for(int j=0 ; j<n ; j++)
-            if(s[i]==t[j])
-              pos=true ;
-        if(pos) cout<< "YES" << endl ;
-        else cout<< "NO" << endl ;
-      }
+
   }

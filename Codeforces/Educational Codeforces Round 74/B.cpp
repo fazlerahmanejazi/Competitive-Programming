@@ -24,20 +24,31 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    int q, n, ans ;
-    bool pos ;
+    int q ;
     cin>> q ;
     while(q--)
       {
-        string s, t ;
-        cin>> s >> t ;
-        n=s.length() ;
-        pos=false ;
+        lli n, r, x, ans=0, curr=0 ;
+        cin>> n >> r ;
+        priority_queue<lli> pq ;
+        vb check(100005, false) ;
         for(int i=0 ; i<n ; i++)
-          for(int j=0 ; j<n ; j++)
-            if(s[i]==t[j])
-              pos=true ;
-        if(pos) cout<< "YES" << endl ;
-        else cout<< "NO" << endl ;
+          {
+            cin>> x ;
+            if(!check[x]) pq.push(x) ;
+            check[x]=true ;
+          }
+        while(!pq.empty())
+          {
+            x=pq.top() ; pq.pop() ;
+            if(x-curr>0)
+              {
+                curr+=r ;
+                ans++ ;
+                x=-1 ;
+                pq.push(x) ;
+              }
+          }
+        cout<< ans << endl ;
       }
   }

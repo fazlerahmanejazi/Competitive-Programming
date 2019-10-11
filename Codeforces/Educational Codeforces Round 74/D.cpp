@@ -21,23 +21,28 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
+lli n ;
+string t ;
+
+bool checkPal(int s, int e)
+  {
+    bool pos=true ;
+    while(s<e && pos)
+      if(t[s]!=t[e]) pos=false ;
+      else s++, e-- ;
+    return pos ;
+  }
+
+lli solve(int s, int e)
+  {
+    if(s>=e) return 0 ;
+    if(checkPal(s, e)) return 1+solve(s+1, e)+solve(s, e-1) ;
+    else return solve(s+1, e)+solve(s, e-1) ;
+  }
+
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    int q, n, ans ;
-    bool pos ;
-    cin>> q ;
-    while(q--)
-      {
-        string s, t ;
-        cin>> s >> t ;
-        n=s.length() ;
-        pos=false ;
-        for(int i=0 ; i<n ; i++)
-          for(int j=0 ; j<n ; j++)
-            if(s[i]==t[j])
-              pos=true ;
-        if(pos) cout<< "YES" << endl ;
-        else cout<< "NO" << endl ;
-      }
+    cin>> n >> t ;
+    cout<< solve(0, n-1) ;
   }

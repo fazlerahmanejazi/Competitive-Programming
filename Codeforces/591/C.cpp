@@ -24,4 +24,32 @@ using vpii = vector<pair<int, int>> ;
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
+    int q ;
+    cin>> q ;
+    while(q--)
+      {
+        lli n, p[200005], cnt[200005], a, x, y, b, k, curr=0, ans=-1, idx1, idx2, l, r, m ;
+        memset(cnt, 0, sizeof cnt) ;
+        cin>> n ;
+        for(int i=1 ; i<=n ; i++) cin>> p[i] ;
+        cin>> x >> a >> y >> b >> k ;
+        for(int i=a ; i<=n ; i+=a) cnt[i]+=x ;
+        for(int i=b ; i<=n ; i+=b) cnt[i]+=y ;
+        sort(p+1, p+n+1) ;
+        l=1 ; r=n ;
+        while(l<=r)
+          {
+            m=(l+r)/2 ;
+            curr=0 ;
+            vlli temp ;
+            for(int i=1 ; i<=m ; i++) if(cnt[i]) temp.pb(cnt[i]) ;
+            sort(all(temp)) ;
+            idx1=temp.size()-1 ;
+            idx2=n ;
+            while(idx1) curr+=p[idx2]*temp[idx1], idx1--, idx2-- ;
+            if(curr>=k) r=m-1, ans=m ;
+            else l=m+1 ;
+          }
+        cout<< ans ;
+      }
   }
