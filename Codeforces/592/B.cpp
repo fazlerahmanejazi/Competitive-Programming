@@ -21,12 +21,19 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-lli n ;
-string t ;
-
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    cin>> n >> t ;
-    cout<< solve(0, n-1) ;
+    int t ;
+    cin>> t ;
+    while(t--)
+      {
+        int n, ans=0 ;
+        string s ;
+        cin>> n >> s ;
+        for(int i=0 ; i<n ; i++)
+          if(s[i]=='0') ans=max({ans, i+1, n-i}) ;
+          else ans=max({ans, 2*(i+1), n, 2*(n-i)}) ;
+        cout<< ans << endl ;
+      }
   }

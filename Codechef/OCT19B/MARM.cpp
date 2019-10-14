@@ -21,12 +21,23 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-lli n ;
-string t ;
-
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    cin>> n >> t ;
-    cout<< solve(0, n-1) ;
+    int t ;
+    cin>> t ;
+    while(t--)
+      {
+        lli n, k, period, idx=0, _k ;
+        cin>> n >> k ;
+        vlli a(n) ;
+        _k=k ;
+        for(int i=0 ; i<n ; i++) cin>> a[i] ;
+        period=3*n ;
+        k%=period ;
+        while(k--) a[idx]=a[idx]^a[n-idx-1], idx=(idx+1)%n ;
+        if(n%2 && _k>n/2) a[n/2]=0 ;
+        for(int i=0 ; i<n ; i++) cout<< a[i] << " " ;
+        cout<< endl ;
+      }
   }
