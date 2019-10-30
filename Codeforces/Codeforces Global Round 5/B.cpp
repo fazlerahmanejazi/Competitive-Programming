@@ -21,33 +21,26 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-lli fast_exp(lli base, lli exp)
-  {
-    lli res=1 ;
-    base=base%mod ;
-    while(exp>0)
-      {
-        if(exp%2) res=(res*base)%mod ;
-        base=(base*base)%mod ;
-        exp/=2;
-      }
-    return res%mod ;
-  }
-
-lli solve(lli n, lli k)
-  {
-    if(n==1) return 1 ;
-    lli x, y ;
-    if(n-1==1) x=1 ;
-    else x=(fast_exp(k-1, (n-1)*(n-1))*2)%mod ;
-    y=(fast_exp(k, 2*n-1)-2*fast_exp(k-1, n-1)++mod)%mod ;
-    return ((2*x)%mod+(solve(n-1, k)*y)%mod)%mod ;
-  }
-
 int main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    lli n, k ;
-    cin>> n >> k ;
-    cout<< solve(n, k) ;
+    int n, ans=0, idx=0 ;
+    cin>> n ;
+    vi a(n), b(n) ;
+    vb fined(n, 0) ;
+    for(int i=0 ; i<n ; i++) cin>> a[i] ;
+    for(int i=0 ; i<n ; i++) cin>> b[i] ;
+    for(int i=0 ; i<n ; i++)
+      {
+        while(fined[a[idx]]) idx++ ;
+        if(a[idx]==b[i])
+          {
+            fined[a[idx]]=1 ;
+            idx++ ;
+            continue ;
+          }
+        ans++ ;
+        fined[b[i]]=1 ;
+      }
+    cout<< ans ;
   }
