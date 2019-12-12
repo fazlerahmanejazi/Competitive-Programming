@@ -6,7 +6,7 @@ using namespace std ;
 #define mod 1000000007
 #define pi acos(-1.0)
 #define eps 1e-8
-//#define endl '\n'
+#define endl '\n'
 #define mp make_pair
 #define mt make_tuple
 #define pb push_back
@@ -23,25 +23,11 @@ using vpii = vector<pair<int, int>> ;
 
 const int N=200010 ;
 
-lli n, k, u, v, depx ;
+lli n, k, u, v ;
 vvi adj(N) ;
-vi sz(N, 0), par(N), dep(N, 0) ;
+vi sz(N, 0) ;
+vector<char> _rank(N) ;
 vb del(N, false) ;
-
-int query(int u, char c)
-  {
-    int x ;
-    cout<< c << " " << u << endl ;
-    cin>> x ;
-    return x ;
-  }
-
-void dfs(int u, int prev, int d)
-    {
-      par[u]=prev ;
-      dep[u]=d ;
-      for(auto v:adj[u]) if(!del[v] && v!=prev) dfs(v, u, d+1) ;
-    }
 
 void dfs_sz(int u, int prev)
   {
@@ -62,24 +48,18 @@ int find_centroid(int u, int prev, int r)
     return u ;
   }
 
-void decompose(int u)
+void decompose(int u, char r)
   {
     dfs_sz(u, u) ;
     int c=find_centroid(u, u, sz[u]/2) ;
     del[c]=true ;
-    int d=query(c, 'd') ;
-    if(!d)
-      {
-        cout<< "! " << c << endl ;
-        return ;
-      }
-    else if(d+dep[c]==depx) decompose(query(c, 's')) ;
-    else decompose(par[c]) ;
+    _rank[c]=r ;
+    for(auto v:adj[c]) if(!del[v]) decompose(v, r+1) ;
   }
 
 int main()
   {
-    //ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
+    ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
     cin>> n ;
     for(int i=1 ; i<n ; i++)
       {
@@ -87,7 +67,6 @@ int main()
         adj[u].pb(v) ;
         adj[v].pb(u) ;
       }
-    depx=query(1, 'd') ;
-    dfs(1, 1, 0) ;
-    decompose(1) ;
+    decompose(1, 'A') ;
+    for(int i=1 ; i<=n ; i++) cout<< _rank[i] << " " ;
   }
