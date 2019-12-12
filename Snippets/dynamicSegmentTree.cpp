@@ -1,62 +1,43 @@
-struct node ;
-node *newNode() ;
+const int N = 1e18+13;
+const int NUM_ELEM = 2e5;
+const int NUM_QUERIES = 2e5;
 
-struct node
-  {
-    int lv, rv, sum ;
-    node *left, *right ;
 
-    node() : left(NULL), right(NULL), sum(0) {}
+struct Node {
+	Node *lp, *rp;
+	int sum;
+};
+inline int eval(Node* p) {
+	return p ? p->sum : 0LL;
+}
 
-    inline void init(int l, int r)
-      {
-        lv=l ;
-        rv=r ;
-      }
+const int bufSize = NUM_ELEM * 63;
+Node buf[bufSize];
+Node *newNode() {
+	static auto ptr = buf;
+	return ptr++;
+}
 
-    inline void extend()
-      {
-        if(!left)
-          {
-            int m=(lv+rv)/2 ;
-            left=newNode() ;
-            right=newNode() ;
-            left->init(lv, m) ;
-            right->init(m+1, rv) ;
-          }
-      }
-
-    int getSum(int l, int r)
-      {
-        if(r<lv || rv<l) return 0 ;
-        if(l<=lv && rv<=r) return sum ;
-        extend() ;
-        return left->getSum(l, r)+right->getSum(l, r) ;
-      }
-
-    void update(int p, int newVal)
-      {
-        if(lv==rv)
-          {
-            sum=newVal ;
-            return ;
-          }
-        extend() ;
-        (p<=left->rv ? left : right)->update(p, newVal) ;
-        sum=left->sum+right->sum ;
-      }
-  } ;
-
-node *newNode()
-  {
-    static int bufSize=1e7 ;
-    static node buf[(int) 1e7] ;
-    assert(bufSize) ;
-    return &buf[--bufSize] ;
-  }
-
-main()
-  {
-    node *rmq=newNode() ;
-    rmq->init(0, 1e9) ;
-  }
+int getSum(Node* cur, int l, int r, int x, int y) {
+	if (!cur || x > r || y < l) return 0;
+    if (x <= l && r <= y) {
+        return cur->sum;
+    }
+    int m = (l + r) / 2;
+    return getSum(cur->lp, l, m, x, y) + getSum(cur->rp, m + 1, r, x, y);
+}
+void update(Node*& cur, int l, int r, int pos, int val) {
+	if (!cur) cur = newNode();
+	if (l == r) {
+		cur->sum = val;
+	} else {
+		int m = (l + r) / 2;
+		if (pos <= m) {
+			update(cur->lp, l, m, pos, val);
+		} else {
+			update(cur->rp, m + 1, r, pos, val);
+		}
+		cur->sum = eval(cur->lp) + eval(cur->rp);
+	}
+}
+Node *root;
