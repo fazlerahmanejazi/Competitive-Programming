@@ -3,19 +3,20 @@ using namespace std;
 
 
 double INF = 1e100;
-double EPS = 1e-12;
+double EPS = 1e-9;
 
 typedef double T;
 
 struct PT {
   T x, y;
   PT() {}
-  PT(T x, T y) : x(x), y(y) {}
+  PT(T x = 0, T y = 0) : x(x), y(y) {}
   PT(const PT &p) : x(p.x), y(p.y) {}
   PT operator + (const PT &p) const { return PT(x+p.x, y+p.y); }
   PT operator - (const PT &p) const { return PT(x-p.x, y-p.y); }
-  PT operator * (T c) const { return PT(x*c, y*c ); }
-  PT operator / (T c) const { return PT(x/c, y/c ); }
+  PT operator * (T c) const { return PT(x*c, y*c); }
+  PT operator / (T c) const { return PT(x/c, y/c); }
+  bool operator ==(const PT &p) const { return fabs(x - p.x) < EPS && fabs(y - p.y) < EPS; }
 };
 
 T dot(PT p, PT q) { return p.x*q.x+p.y*q.y; }
@@ -34,12 +35,12 @@ PT ProjectPointLine(PT a, PT b, PT c) { return a + (b-a)*dot(c-a, b-a)/dot(b-a, 
 
 // project point c onto line segment through a and b
 PT ProjectPointSegment(PT a, PT b, PT c) {
-T r = dot(b-a,b-a);
-if (fabs(r) < EPS) return a;
-r = dot(c-a, b-a)/r;
-if (r < 0) return a;
-if (r > 1) return b;
-return a + (b-a)*r;
+  T r = dot(b-a,b-a);
+  if (fabs(r) < EPS) return a;
+  r = dot(c-a, b-a)/r;
+  if (r < 0) return a;
+  if (r > 1) return b;
+  return a + (b-a)*r;
 }
 
 // compute distance from c to segment between a and b
@@ -113,6 +114,7 @@ return false;
 
 // compute intersection of line through points a and b with
 // circle centered at c with radius r > 0
+// can be 0(non-intersecting), 1(tangent), or 2 points
 vector<PT> CircleLineIntersection(PT a, PT b, PT c, T r) {
   vector<PT> ret;
   b = b-a;
@@ -130,6 +132,7 @@ vector<PT> CircleLineIntersection(PT a, PT b, PT c, T r) {
 
 // compute intersection of circle centered at a with radius r
 // with circle centered at b with radius R
+// can be 0(non-intersecting), 1(tangent), or 2 points
 vector<PT> CircleCircleIntersection(PT a, PT b, T r, T R) {
   vector<PT> ret;
   T d = sqrt(dist2(a, b));
