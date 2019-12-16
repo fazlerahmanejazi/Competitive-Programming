@@ -22,18 +22,52 @@ using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
 const int N=200010 ;
+const int L=20 ;
 
-int n, q, u, v, w, l, res=0 ;
+int n, q, u, v, w, res=0, x, timer, tin[N], tout[N], up[N][30] ;
+lli l, depth[N] ;
 vector<vpii> adj(N) ;
+vector<vlli> dist1(N), dist2(N) ;
 vi sz(N, 0), par(N) ;
 vb del(N, false) ;
-vector<vlli> dist(N) ;
-vector<map<int, int>> dist_centroid(N) ;
 
-void dfs(int u, int prev, int d, int c)
+void dfs_lca(int u, int p=1, lli d=0)
   {
-    dist[c].pb(d) ;
-    dist_centroid[c][u]=d ;
+    tin[u]=++timer ;
+    depth[u]=d ;
+    up[u][0]=p ;
+    for(int i=1 ; i<=L ; i++) up[u][i]=up[up[u][i-1]][i-1] ;
+    for(auto v:adj[u]) if(v.fi!=p) dfs_lca(v.fi, u, d+v.se) ;
+    tout[u]=++timer ;
+  }
+
+bool is_ancestor(int u, int v)
+  {
+    return tin[u]<=tin[v] && tout[u]>=tout[v] ;
+  }
+
+int lca(int u, int v)
+  {
+    if(u==v) return u ;
+    if(is_ancestor(u, v)) return u ;
+    if(is_ancestor(v, u)) return v ;
+    for(int i=L ; i>=0 ; i--)
+      if(!is_ancestor(up[u][i], v))
+        u=up[u][i] ;
+    return up[u][0] ;
+  }
+
+lli dist(int u, int v)
+  {
+    int x=lca(u, v) ;
+    lli d=depth[u]+depth[v]-2*depth[x] ;
+    return d ;
+  }
+
+void dfs(int u, int prev, lli d, int c)
+  {
+    dist1[c].pb(d) ;
+    dist2[c].pb(dist(u, par[c])) ;
     for(auto v:adj[u])
       if(!del[v.fi] && v.fi!=prev)
         dfs(v.fi, u, d+v.se, c) ;
@@ -58,31 +92,34 @@ int find_centroid(int u, int prev, int r)
     return u ;
   }
 
-void decompose(int u, int p)
+void decompose(int u, int p=-1)
   {
     dfs_sz(u, u) ;
     int c=find_centroid(u, u, sz[u]/2) ;
-    par[c]=p ;
+    par[c]=(p==-1)?c:p ;
     del[c]=true ;
     dfs(c, c, 0, c) ;
-    sort(all(dist[c])) ;
+    sort(all(dist1[c])) ;
+    sort(all(dist2[c])) ;
     for(auto v:adj[c]) if(!del[v.fi]) decompose(v.fi, c) ;
   }
 
-int query(int u, int l)
+int query(int u, lli l)
   {
-    int res=0 ;
-    while(l>0)
+    int v=u ;
+    int res=upper_bound(all(dist1[v]), l)-dist1[v].begin() ;
+    while(par[v]!=v)
       {
-        res+=upper_bound(all(dist[u]), l)-dist[u].begin() ;
-        if(par[u]==-1) break ;
-        l-=dist_centroid[par[u]][u] ;
-        u=par[u] ;
+        lli d=dist(par[v], u) ;
+        int x=upper_bound(all(dist2[v]), l-d)-dist2[v].begin() ;
+        int y=upper_bound(all(dist1[par[v]]), l-d)-dist1[par[v]].begin() ;
+        res+=y-x ;
+        v=par[v] ;
       }
     return res ;
   }
 
-int main()
+int32_t main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
     cin>> n >> q ;
@@ -92,7 +129,8 @@ int main()
         adj[u].pb(mp(v, w)) ;
         adj[v].pb(mp(u, w)) ;
       }
-    decompose(1, 1) ;
+    dfs_lca(1) ;
+    decompose(1) ;
     for(int i=1 ; i<=q ; i++)
       {
         cin>> u >> l ;
