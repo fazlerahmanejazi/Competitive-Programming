@@ -21,44 +21,53 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-#define ld long double
+const int N=200010 ;
 
-ld check(lli n, ld l, ld v1, ld v2, lli k, ld y)
+lli n, k, u, v, w, x, res=0 ;
+vvi adj(N) ;
+vi sz(N, 0) ;
+vb is_town(N, false) ;
+
+void dfs(int u, int prev, int d)
   {
-    ld ans=0, x, t, T=0, curr ;
-    while(n)
-      {
-        t=2*y/(v1+v2) ;
-        n-=min(n, k) ;
-        if(!n) ans=max(ans, T+l/v2) ;
-        else
-          {
-            curr=T ;
-            curr+=min(y, l)/v2 ;
-            curr+=(l-min(y, l))/v1 ;
-            ans=max(ans, curr) ;
-          }
-        x=t*v1 ;
-        l-=x ;
-        T+=t ;
-      }
-    return ans ;
+    if(is_town[u]) res+=d ;
+    for(auto v:adj[u])
+      if(v!=prev)
+        dfs(v, u, d+1) ;
   }
 
-int main()
+void dfs_sz(int u, int prev)
+  {
+    sz[u]=1 ;
+    for(auto v:adj[u])
+      if(v!=prev)
+        {
+          dfs_sz(v, u) ;
+          sz[u]+=sz[v] ;
+        }
+  }
+
+int find_centroid(int u, int prev, int r)
+  {
+    for(auto v:adj[u])
+      if(v!=prev && sz[v]>r)
+        return find_centroid(v, u, r) ;
+    return u ;
+  }
+
+int32_t main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    lli n, k ;
-    ld l, v1, v2, s, e, m1, m2, f1, f2 ;
-    cin>> n >> l >> v1 >> v2 >> k ;
-    s=0 ; e=l ;
-    while (e-s>eps)
+    cin>> n >> k ;
+    for(int i=1 ; i<=2*k ; i++) cin>> x, is_town[x]=true ;
+    for(int i=1 ; i<n ; i++)
       {
-        m1=s+(e-s)/3 ; m2=e-(e-s)/3 ;
-        f1=check(n, l, v1, v2, k, m1) ;
-        f2=check(n, l, v1, v2, k, m2) ;
-        if(f1>f2) s=m1 ;
-        else e=m2 ;
+        cin>> u >> v ;
+        adj[u].pb(v) ;
+        adj[v].pb(u) ;
       }
-    cout<< fixed << setprecision(9) << check(n, l, v1, v2, k, e) ;
+    dfs_sz(1, 1) ;
+    int c=find_centroid(1, 1, sz[1]/2) ;
+    dfs(c, c, 0) ;
+    cout<< res ;
   }

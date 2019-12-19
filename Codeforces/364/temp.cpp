@@ -21,44 +21,135 @@ using vvi = vector<vector<int>> ;
 using vlli = vector<long long int> ;
 using vpii = vector<pair<int, int>> ;
 
-#define ld long double
+const int N=1010 ;
+const int M=30010 ;
 
-ld check(lli n, ld l, ld v1, ld v2, lli k, ld y)
+lli n, m, u, v, w, s, t, x, budget=INF, c, ans[3], curr, curr_idx, C ;
+vb allowed(M, true), visit, bridge() ;
+vector<vector<tuple<lli, lli, lli>>> adj(N) ;
+vlli parent, low, disc, path, component, temp, path ;
+bool reachable ;
+
+void init()
   {
-    ld ans=0, x, t, T=0, curr ;
-    while(n)
-      {
-        t=2*y/(v1+v2) ;
-        n-=min(n, k) ;
-        if(!n) ans=max(ans, T+l/v2) ;
-        else
-          {
-            curr=T ;
-            curr+=min(y, l)/v2 ;
-            curr+=(l-min(y, l))/v1 ;
-            ans=max(ans, curr) ;
-          }
-        x=t*v1 ;
-        l-=x ;
-        T+=t ;
-      }
-    return ans ;
+    tree.resize(n+1) ;
+    disc.resize(n+1) ;
+    low.resize(n+1) ;
+    component.assign(n+1, 0) ;
+    visit.assign(n+1, false) ;
+    bridge.assign(m+1, false) ;
   }
 
-int main()
+void dfs_path(int u)
+  {
+    if(reachable) return ;
+    if(u==t)
+      {
+        reachable=true ;
+        path=temp ;
+        return ;
+      }
+    for(auto i:adj[u])
+      {
+        lli v, w, idx ;
+        tie(v, w, idx)=i ;
+        temp.pb(idx) ;
+        dfs_path(v) ;
+        temp.pop_back() ;
+      }
+  }
+
+void find_bridges(int u)
+  {
+    visit[u]=true ;
+    disc[u]=low[u]=++T ;
+    for(auto i:adj[u])
+      {
+        lli v, w, idx ;
+        tie(v, w, idx)=i ;
+        if(!allowed[idx]) continue ;
+        if(!visit[v])
+          {
+            parent[v]=u ;
+            find_bridges(v) ;
+            low[u]=min(low[u], low[v]) ;
+            if(low[v]>disc[u]) bridge[idx]=true ;
+          }
+        else if(v!=parent[u]) low[u]=min(low[u], disc[v]) ;
+      }
+  }
+
+void dfs_components(int u)
+  {
+    component[u]=C ;
+    for(auto i:adj[u])
+      if(!component[get<0>(i)] && !bridge[get<2>(i)] && allowed[get<2>(i)])
+        dfs_components(v) ;
+  }
+
+void build(int u)
+  {
+    visit[u]=true ;
+    for(auto i:adj[u])
+      {
+        lli v, w, idx ;
+        tie(v, w, idx)=i ;
+        if(!visit[v])
+          {
+            build(v) ;
+            if(bridge[idx])
+              {
+                tree[component[u]].pb(mt(component[v], w, idx)) ;
+                tree[component[v]].pb(mt(component[u], w, idx)) ;
+              }
+          }
+      }
+  }
+
+void dfs_min_edge(int u, int prev, lli minm, int minm_idx)
+  {
+    if(u==t)
+      {
+        curr=minm ;
+        curr_idx=minm_idx ;
+        return ;
+      }
+    for(auto i:tree[u])
+      {
+        lli v, w, idx ;
+        tie(v, w, idx)=i ;
+        if(allowed[idx] && v!=prev) dfs(v, u, min(minm, w), minm<w?minm_idx:idx) ;
+      }
+  }
+
+int32_t main()
   {
     ios_base::sync_with_stdio (false) ; cin.tie(0) ; cout.tie(0) ;
-    lli n, k ;
-    ld l, v1, v2, s, e, m1, m2, f1, f2 ;
-    cin>> n >> l >> v1 >> v2 >> k ;
-    s=0 ; e=l ;
-    while (e-s>eps)
+    cin>> n >> m >> s >> t ;
+    for(int i=1 ; i<=m ; i++)
       {
-        m1=s+(e-s)/3 ; m2=e-(e-s)/3 ;
-        f1=check(n, l, v1, v2, k, m1) ;
-        f2=check(n, l, v1, v2, k, m2) ;
-        if(f1>f2) s=m1 ;
-        else e=m2 ;
+        cin>> u >> v >> w ;
+        adj[u].pb(mt(v, w, i)) ;
+        adj[v].pb(mt(u, w, i)) ;
+        cost[i]=w ;
       }
-    cout<< fixed << setprecision(9) << check(n, l, v1, v2, k, e) ;
+    dfs_path(s) ;
+    if(!reachable) return cout<< 0 << endl << 0, 0 ;
+    for(auto i:path)
+      {
+        allowed[i]=false ;
+        init() ;
+        find_bridges(s) ;
+        for(int i=1; i<=n ; i++) if(!component[i]) C++, dfs_components(i) ;
+        build(s) ;
+        if(visit[t]==0 && cost[i]<budget) budget=cost[i], c=1, ans[1]=i ;
+        else if(visit[t]==1)
+          {
+            dfs_min_edge(s, 0, INF, -1) ;
+            if(cost[i]+curr<budget) budget=cost[i]+curr, c=2, ans[1]=i, ans[2]=curr_idx ;
+          }
+      }
+    if(budget==INF) return cout<< -1, 0 ;
+    if(c==1) cout<< budget << endl << c << endl << ans[1] ;
+    else cout<< budget << endl << c << endl << ans[1] << " " << ans[2] ;
   }
