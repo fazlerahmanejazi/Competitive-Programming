@@ -1,0 +1,233 @@
+//Nightmare05
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define sp << " " <<
+#define mod 998244353
+#define mp make_pair
+#define pb push_back
+#define int long long
+#define double long double
+#define INF (1e18+13)
+//#define PI 3.1415926535898
+
+int power(int p,int j)
+{
+    int res=1;
+    p=p%mod;
+    while(j>0)
+    {
+        if(j&1)
+            res=(res*p)%mod;
+        j=j>>1;
+        p=(p*p)%mod;
+    }
+    return res;
+}
+
+
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+
+int dice(int d,int p)
+{
+    uniform_int_distribution<int> uid(d,p);//specify l and s.
+    return uid(rng) ;
+}
+/*
+int read()
+{
+       int cc = getc(stdin);
+       for (;cc < '0' || cc > '9';)  cc = getc(stdin);
+       int ans = 0;
+       for (;cc >= '0' && cc <= '9';)
+       {
+          ans = ans * 10 + cc - '0';
+          cc = getc(stdin);
+       }
+      return ans;
+}
+
+inline void print(int n)
+{
+  if (n == 0)
+  {
+    putchar('0');
+    putchar('\n');
+  }
+  else if (n == -1)
+  {
+    putchar('-');
+    putchar('1');
+    putchar('\n');
+  }
+  else
+  {
+    char buf[20];
+    buf[19] = '\n';
+    int i = 18;
+    while (n)
+    {
+      buf[i--] = n % 10 + '0';
+      n /= 10;
+    }
+    while (buf[i] != '\n')
+      putchar(buf[++i]);
+  }
+}
+
+int n;
+
+vector<vector<int>> mat_mul(vector<vector<int>> a,vector<vector<int>> b)
+{
+    int n=5;
+    vector<vector<int>> ans2(n,vector<int>(n,0));
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            for(int ans2=0;ans2<n;ans2++)
+            {
+                ans2[i][j]+=((a[i][ans2]*b[ans2][j])%mod);
+                ans2[i][j]%=mod;
+            }
+        }
+    }
+    return ans2;
+}
+
+vector<vector<int>> pow_mat(vector<vector<int>> mat_a,int p)
+{
+    if(p==1)
+        return mat_a;
+    vector<vector<int>> temp=pow_mat(mat_a,p/2);
+    vector<vector<int>> res=mat_mul(temp,temp);
+    if(p&1)
+        res=mat_mul(res,mat_a);
+    return res;
+}
+*/
+
+#define hell        998244353
+//const int mod=998244353;
+const int root=267099868;   // nth root of mod
+const int root_1=382752275; // inverse of root
+const int root_pw= (1<<22);    // value of n
+void fft(vector<int> &a,bool invert){
+    int i,j,n=(int)a.size();
+    for(i=1,j=0;i<n;++i){
+        int bit=n>>1;
+        for(;j>=bit;bit>>=1){
+            j-=bit;
+        }
+        j+=bit;
+        if(i<j) swap(a[i],a[j]);
+    }
+    for(int len=2;len<=n;len<<=1){
+        int wlen=invert?root_1:root;
+        for(i=len;i<root_pw;i<<=1){
+            wlen=(wlen*wlen%hell);
+        }
+        for(i=0;i<n;i+=len){
+            int w=1;
+            for(j=0;j<len/2;++j){
+                int u=a[i+j],v=(int)(a[i+j+len/2]*w%hell);
+                a[i+j]=(u+v+hell)%hell;
+                a[i+j+len/2]=(u-v+hell)%hell;
+                w=(w*wlen%hell);
+            }
+        }
+    }
+    if(invert){
+        int nrev=power(n,hell-2);
+        for(i=0;i<n;++i){
+            a[i]=(a[i]*nrev%hell);
+        }
+    }
+}
+
+vector<int> multiply(vector<int> &a,vector<int> &b){
+    vector<int> fa(a.begin(),a.end()),fb(b.begin(),b.end());
+    size_t n=1;
+    while(n<max(a.size(),b.size()))
+        n<<=1;
+    n<<=1;
+    fa.resize(n),fb.resize(n);
+    fft(fa,false),fft(fb,false);
+    for(size_t i=0;i<n;++i){
+        fa[i]*=fb[i];
+    }
+    fft(fa,true);
+    vector<int> res;
+    res.resize(n);
+    for(size_t i=0;i<n;++i){
+        res[i]=fa[i];
+    }
+    return res;
+}
+
+int n;
+int a[1513][1513];
+vector<int> dp[1513];
+int p[1513];
+vector<int> d[1513];
+int c[1513];
+
+void merge(int x,int y)
+{
+    if(d[x].size()<d[y].size())
+        swap(x,y);
+    for(int i=0;i<d[x].size();i++)
+        for(int j=0;j<d[y].size();j++)
+            c[x]=max(c[x],a[d[x][i]][d[y][j]]);
+    for(int i=0;i<d[y].size();i++)
+    {
+        p[d[y][i]]=x;
+        d[x].pb(d[y][i]);
+    }
+	dp[x]=multiply(dp[x],dp[y]);
+	if(dp[x].size()>1513)
+        dp[x].resize(1513);
+}
+
+
+int32_t main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    //freopen("elimination_validation_input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+    cin >> n;
+    for(int i=1;i<=n;i++)
+        for(int j=1;j<=n;j++)
+            cin >> a[i][j];
+    for (int i=1; i<=n; i++)
+	{
+		p[i]=i;
+		d[i].pb(i);
+		dp[i].pb(0);
+		dp[i].pb(1);
+	}
+	vector<pair<int,pair<int,int>>> k;
+	for(int i=1;i<=n;i++)
+		for(int j=1;j<i;j++)
+			k.pb(mp(a[i][j],mp(i,j)));
+	sort(k.begin(),k.end());
+	for(auto h:k)
+	{
+		int t=h.first;
+		int a=h.second.first;
+		int b=h.second.second;
+		a=p[a];
+		b=p[b];
+		if(a!=b)
+			merge(a,b);
+		if(c[a]==t)
+            dp[a][1]=(dp[a][1]+1)%998244353;
+	}
+	vector<int> h=dp[p[1]];
+	for(int i=1;i<=n;i++)
+        cout << (h[i]+998244353)%998244353 << " ";
+    return 0;
+}
