@@ -1,0 +1,37 @@
+#include<iostream>
+#include<cmath>
+
+struct cost
+{
+    int first;
+    int second;
+};
+
+using namespace std;
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    long long n,a=0,g=0,x,y;
+    cin >> n;
+    cost p[n];
+    string s="";
+    for(long long i=0;i<n;i++)
+    {
+        cin >> p[i].first >> p[i].second;
+		    x=abs((a+p[i].first)-g);
+		    y=abs((g+p[i].second)-a);
+		    if(x<=y)
+		    {
+			      s+="A";
+			      a+=p[i].first;
+		    }
+		    else
+		    {
+			      s+="G";
+			      g+=p[i].second;
+		    }
+	  }		
+    cout << s;
+	return 0;
+}
