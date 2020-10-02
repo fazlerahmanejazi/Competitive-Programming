@@ -1,0 +1,13 @@
+#include<iostream>
+#include<algorithm>
+
+using namespace std;
+
+int main()
+{
+    int n,m,a,b,x;
+    cin >> n >> m >> a >> b;
+    x=min((n*a),(((n/m)*b)+((n%m)*a)));
+    cout << min(x,(((n/m)+1)*b));
+    return 0;
+}
